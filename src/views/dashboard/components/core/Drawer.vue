@@ -27,16 +27,24 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-divider class="mb-1" />
-
-    <v-list
-      dense
-      nav
+    <div
+      v-if="currentUser"
     >
-      <base-item-group :item="profile" />
-    </v-list>
-
-    <v-divider class="mb-2" />
+      <v-divider
+        class="mb-1"
+        v-if="currentUser"
+      />
+      <v-list
+        dense
+        nav
+      >
+        <base-item-group :item="profile"/>
+      </v-list>
+      <v-divider
+        class="mb-2"
+        v-if="currentUser"
+      />
+    </div>
 
     <v-list
       expand
@@ -44,8 +52,6 @@
     >
       <!-- Style cascading bug  -->
       <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
-      <div />
-
       <template v-for="(item, i) in computedItems">
         <base-item-group
           v-if="item.children"
@@ -62,18 +68,13 @@
         />
       </template>
 
-      <!-- Style cascading bug  -->
-      <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
-      <div />
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
   // Utilities
-  import {
-    mapState,
-  } from 'vuex'
+  import { mapGetters, mapState } from 'vuex'
 
   export default {
     name: 'DashboardCoreDrawer',
@@ -249,6 +250,7 @@
 
     computed: {
       ...mapState(['barColor', 'barImage']),
+      ...mapGetters('user', ['currentUser']),
       drawer: {
         get () {
           return this.$store.state.drawer
@@ -264,10 +266,10 @@
         return {
           avatar: true,
           group: '',
-          title: this.$t('avatar'),
+          title: this.currentUser.name,
           children: [
             {
-              href: '',
+              to: '',
               title: this.$t('my-profile'),
             },
             {

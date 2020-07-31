@@ -8,9 +8,9 @@
     style="width: auto;"
   >
     <v-btn
+      @click="$vuetify.breakpoint.smAndDown ? setDrawer(!drawer) : $emit('input', !value)"
       fab
       small
-      @click="$vuetify.breakpoint.smAndDown ? setDrawer(!drawer) : $emit('input', !value)"
     >
       <v-icon v-if="value">
         mdi-view-quilt
@@ -26,13 +26,13 @@
       v-text="$route.name"
     />
 
-    <v-spacer />
+    <v-spacer/>
 
     <v-text-field
       :label="$t('search')"
+      class="mb-2"
       color="secondary"
       hide-details
-      class="mb-2"
       style="max-width: 165px;"
     >
       <template
@@ -49,7 +49,7 @@
       </template>
     </v-text-field>
 
-    <div class="mx-3" />
+    <div class="mx-3"/>
 
     <v-btn
       min-width="0"
@@ -91,10 +91,10 @@
       >
         <div>
           <app-bar-item
-            v-for="(n, i) in notifications"
             :key="`item-${i}`"
+            v-for="(n, i) in notifications"
           >
-            <v-list-item-title v-text="n" />
+            <v-list-item-title v-text="n"/>
           </app-bar-item>
         </div>
       </v-list>
@@ -126,17 +126,17 @@
       >
         <template v-for="(p, i) in profile">
           <v-divider
-            v-if="p.divider"
             :key="`divider-${i}`"
             class="mb-2 mt-2"
+            v-if="p.divider"
           />
 
           <app-bar-item
-            v-else
             :key="`item-${i}`"
             to="/"
+            v-else
           >
-            <v-list-item-title v-text="p.title" />
+            <v-list-item-title v-text="p.title"/>
           </app-bar-item>
         </template>
       </v-list>
@@ -147,9 +147,8 @@
 <script>
   // Components
   import { VHover, VListItem } from 'vuetify/lib'
-
   // Utilities
-  import { mapState, mapMutations } from 'vuex'
+  import { mapMutations, mapState } from 'vuex'
 
   export default {
     name: 'DashboardCoreAppBar',

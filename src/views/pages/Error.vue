@@ -30,9 +30,9 @@
 <script>
   export default {
     name: 'PagesError',
-    data() {
+    data () {
       return {
-        attachment: ''
+        attachment: '',
       }
     },
   }

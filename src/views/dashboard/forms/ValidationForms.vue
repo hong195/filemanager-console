@@ -110,7 +110,7 @@
             color="success"
             inline
             title="Type Validation"
-            class="px-5 py-3"
+            class="px-5 py-4"
           >
             <v-row
               align="center"

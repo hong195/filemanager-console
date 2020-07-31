@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import user from './user'
 
 Vue.use(Vuex)
 
-console.log(1)
 export default new Vuex.Store({
   state: {
     barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
@@ -21,7 +21,7 @@ export default new Vuex.Store({
       state.barColor = payload
     },
   },
-  actions: {
-
+  modules: {
+    user: user,
   },
 })

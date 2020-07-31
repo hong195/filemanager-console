@@ -1,12 +1,11 @@
 <template>
   <v-app>
 
-    <pages-core-app-bar/>
+    <pages-core-app-bar />
 
-    <pages-core-view/>
+    <pages-core-view />
 
-    <pages-core-footer/>
-
+    <pages-core-footer />
   </v-app>
 </template>
 
@@ -22,8 +21,6 @@
 
     created() {
       this.$vuetify.theme.dark = true
-
-
     },
 
     beforeDestroy() {

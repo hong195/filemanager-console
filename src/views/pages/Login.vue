@@ -7,68 +7,60 @@
     <v-row justify="center">
       <v-slide-y-transition appear>
         <base-material-card
+          background-color="#fff"
           color="success"
-          light
-          max-width="100%"
-          width="400"
-          class="px-5 py-3"
+          class="py-3 px-5"
+          icon="mdi-mail"
+          max-width="400"
+          title="Форма регистрации"
+          width="100%"
         >
-          <template v-slot:heading>
-            <div class="text-center">
-              <h1 class="display-2 font-weight-bold mb-2">
-                Login
-              </h1>
-
-              <v-btn
-                v-for="(social, i) in socials"
-                :key="i"
-                :href="social.href"
-                class="ma-1"
-                icon
-                rel="noopener"
-                target="_blank"
-              >
-                <v-icon
-                  v-text="social.icon"
-                />
-              </v-btn>
-            </div>
-          </template>
-
-          <v-card-text class="text-center">
-            <div class="text-center grey--text body-1 font-weight-light">
-              Or Be Classical
-            </div>
+          <v-form
+            :data-vv-scope="scope"
+            @submit.prevent="validateForm()"
+            color="white"
+          >
 
             <v-text-field
               color="secondary"
-              label="First Name..."
-              prepend-icon="mdi-face"
-              class="mt-10"
-            />
-
-            <v-text-field
-              color="secondary"
-              label="Email..."
+              label="Электронная почта*"
               prepend-icon="mdi-email"
+              v-model="email"
+              :error-messages="errors.collect(`${scope}.email`)"
+              v-validate="'required|email'"
+              data-vv-name="email"
             />
 
             <v-text-field
-              class="mb-8"
+              :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="show ? 'text' : 'password'"
+              @click:append.prevent="show = !show"
               color="secondary"
-              label="Password..."
-              prepend-icon="mdi-lock-outline"
+              label="Пароль*"
+              prepend-icon="mdi-account-key"
+              v-model="password"
+              :error-messages="errors.collect(`${scope}.password`)"
+              v-validate="'required'"
+              data-vv-name="password"
             />
 
-            <pages-btn
-              large
-              color=""
-              depressed
-              class="v-btn--text success--text"
-            >
-              Let's Go
-            </pages-btn>
-          </v-card-text>
+            <div class="body-2 py-2 font-weight-light">
+              * Обязательные поля
+            </div>
+
+            <v-card-actions class="pa-0 py-3">
+              <v-spacer/>
+              <v-btn
+                color="success"
+                default
+                type="submit"
+                :loading="loading"
+              >
+                Войти
+              </v-btn>
+              <v-spacer/>
+            </v-card-actions>
+          </v-form>
         </base-material-card>
       </v-slide-y-transition>
     </v-row>
@@ -76,28 +68,37 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+
   export default {
     name: 'PagesLogin',
 
-    components: {
-      PagesBtn: () => import('./components/Btn'),
-    },
-
     data: () => ({
-      socials: [
-        {
-          href: '#',
-          icon: 'mdi-facebook-box',
-        },
-        {
-          href: '#',
-          icon: 'mdi-twitter',
-        },
-        {
-          href: '#',
-          icon: 'mdi-github-box',
-        },
-      ],
+      email: '',
+      password: '',
+      show: false,
+      scope: 'login-form',
+      loading: false,
     }),
+    methods: {
+      ...mapActions('user', ['login']),
+      validateForm () {
+        this.loading = true
+        this.$validator.validateAll(this.scope)
+          .then((result) => {
+            return new Promise((resolve, reject) => {
+              return result ? resolve(result) : reject(result)
+            })
+          })
+          .then(() => {
+            this.login({
+              email: this.email,
+              password: this.password,
+            })
+              .then(data => this.$router.push('/'))
+          })
+        this.loading = false
+      },
+    },
   }
 </script>

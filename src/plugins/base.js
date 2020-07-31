@@ -6,6 +6,8 @@ import VueAxios from 'vue-axios'
 
 Vue.use(VueAxios, axios)
 
+axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT
+
 const requireComponent = require.context(
   '@/components/base', true, /\.vue$/
 )
