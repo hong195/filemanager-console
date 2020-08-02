@@ -3,13 +3,12 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-console.log(2)
 export default new Router({
   mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/pages',
+      path: '/page',
       component: () => import('@/views/pages/Index'),
       children: [
         {
@@ -21,11 +20,6 @@ export default new Router({
           name: 'Login',
           path: 'login',
           component: () => import('@/views/pages/Login'),
-        },
-        {
-          name: 'Pricing',
-          path: 'pricing',
-          component: () => import('@/views/pages/Pricing'),
         },
         {
           name: 'Register',
@@ -40,25 +34,24 @@ export default new Router({
       children: [
         // Dashboard
         {
-          name: 'Dashboard',
+          name: '',
           path: '',
-          component: () => import('@/views/dashboard/Dashboard'),
+          component: () => import('@/views/dashboard/Posts'),
         },
-        // Pages
         {
-          name: 'RTL',
-          path: 'pages/rtl',
-          component: () => import('@/views/dashboard/pages/Rtl'),
+          name: '',
+          path: 'posts',
+          component: () => import('@/views/dashboard/Posts'),
+        },
+        {
+          name: 'Добавление записи',
+          path: 'posts/create',
+          component: () => import('@/views/dashboard/PostCreate'),
         },
         {
           name: 'User Profile',
           path: 'pages/user',
           component: () => import('@/views/dashboard/pages/UserProfile'),
-        },
-        {
-          name: 'Timeline',
-          path: 'pages/timeline',
-          component: () => import('@/views/dashboard/pages/Timeline'),
         },
         // Components
         {
@@ -128,17 +121,6 @@ export default new Router({
           path: 'tables/data-tables',
           component: () => import('@/views/dashboard/tables/DataTables'),
         },
-        // Maps
-        {
-          name: 'Google Maps',
-          path: 'maps/google-maps',
-          component: () => import('@/views/dashboard/maps/GoogleMaps'),
-        },
-        {
-          name: 'Full Screen Map',
-          path: 'maps/full-screen-map',
-          component: () => import('@/views/dashboard/maps/FullScreenMap'),
-        },
         // Root level
         {
           name: 'Widgets',
@@ -149,11 +131,6 @@ export default new Router({
           name: 'Charts',
           path: 'charts',
           component: () => import('@/views/dashboard/Charts'),
-        },
-        {
-          name: 'Calendar',
-          path: 'calendar',
-          component: () => import('@/views/dashboard/Calendar'),
         },
       ],
     },

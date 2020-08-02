@@ -17,31 +17,30 @@
         >
           <v-form
             :data-vv-scope="scope"
-            @submit.prevent="validateForm()"
             color="white"
+            @submit.prevent="validateForm()"
           >
-
             <v-text-field
+              v-model="email"
+              v-validate="'required|email'"
               color="secondary"
               label="Электронная почта*"
               prepend-icon="mdi-email"
-              v-model="email"
               :error-messages="errors.collect(`${scope}.email`)"
-              v-validate="'required|email'"
               data-vv-name="email"
             />
 
             <v-text-field
+              v-model="password"
               :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
               :type="show ? 'text' : 'password'"
-              @click:append.prevent="show = !show"
+              v-validate="'required'"
               color="secondary"
               label="Пароль*"
               prepend-icon="mdi-account-key"
-              v-model="password"
               :error-messages="errors.collect(`${scope}.password`)"
-              v-validate="'required'"
               data-vv-name="password"
+              @click:append.prevent="show = !show"
             />
 
             <div class="body-2 py-2 font-weight-light">
@@ -49,7 +48,7 @@
             </div>
 
             <v-card-actions class="pa-0 py-3">
-              <v-spacer/>
+              <v-spacer />
               <v-btn
                 color="success"
                 default
@@ -58,7 +57,7 @@
               >
                 Войти
               </v-btn>
-              <v-spacer/>
+              <v-spacer />
             </v-card-actions>
           </v-form>
         </base-material-card>

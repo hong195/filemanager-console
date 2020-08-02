@@ -8,10 +8,10 @@
   export default {
     name: 'App',
     created () {
-      this.me()
+      this.checkUser()
     },
     methods: {
-      ...mapActions('user', ['me']),
+      ...mapActions('user', ['checkUser']),
     },
   }
 </script>

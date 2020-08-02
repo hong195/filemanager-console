@@ -21,8 +21,7 @@
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="text-uppercase font-weight-regular display-2">
-          <span class="logo-mini">{{ $t('ct') }}</span>
-          <span class="logo-normal">{{ $t('tim') }}</span>
+          <span class="logo-normal">Центр Знаний</span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -31,18 +30,18 @@
       v-if="currentUser"
     >
       <v-divider
-        class="mb-1"
         v-if="currentUser"
+        class="mb-1"
       />
       <v-list
         dense
         nav
       >
-        <base-item-group :item="profile"/>
+        <base-item-group :item="profile" />
       </v-list>
       <v-divider
-        class="mb-2"
         v-if="currentUser"
+        class="mb-2"
       />
     </div>
 
@@ -67,7 +66,6 @@
           :item="item"
         />
       </template>
-
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -90,7 +88,7 @@
       items: [
         {
           icon: 'mdi-view-dashboard',
-          title: 'dashboard',
+          title: 'Записи',
           to: '/',
         },
         {

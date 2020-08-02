@@ -4,8 +4,8 @@
     tag="section"
   >
     <base-v-component
-      heading="Data Tables"
-      link="components/data-tables"
+      heading="Медиа файлы"
+      sub-title="Список медиа файлов"
     />
 
     <base-material-card

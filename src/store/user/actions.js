@@ -30,10 +30,13 @@ export default {
         commit('authFailed')
       })
   },
-  me ({ commit, state }) {
+  checkUser ({ commit, state }) {
     const token = localStorage.getItem('token')
     const config = {
       headers: { Authorization: `Bearer ${token}` },
+    }
+    if (!token) {
+      return
     }
     return axios.post('auth/me', '', config)
       .then(({ data }) => {
