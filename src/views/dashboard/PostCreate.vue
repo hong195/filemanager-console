@@ -172,6 +172,11 @@
             this.$validator.reset()
             this.formPreloader = false
           })
+          .then(() => {
+            setTimeout(() => {
+              this.$router.push('/posts')
+            }, 500)
+          })
       },
       getFormValues () {
         const fd = new FormData()

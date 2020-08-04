@@ -49,9 +49,14 @@ export default new Router({
           component: () => import('@/views/dashboard/PostCreate'),
         },
         {
-          name: 'User Profile',
-          path: 'pages/user',
-          component: () => import('@/views/dashboard/pages/UserProfile'),
+          name: 'Список Категорий',
+          path: 'category',
+          component: () => import('@/views/dashboard/Category'),
+        },
+        {
+          name: 'Пользователи',
+          path: 'users',
+          component: () => import('@/views/dashboard/Users'),
         },
         // Components
         {

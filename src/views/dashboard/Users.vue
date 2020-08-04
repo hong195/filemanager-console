@@ -4,9 +4,9 @@
     tag="section"
   >
     <base-v-component
-      heading="Медиа файлы"
-      sub-title="Список медиа файлов"
+      heading="Список Пользователей"
     />
+
     <base-material-card
       class="px-5 py-3"
       color="indigo"
@@ -15,7 +15,7 @@
     >
       <template v-slot:after-heading>
         <div class="display-2 font-weight-light">
-          Файлы
+          Пользователи
         </div>
       </template>
 
@@ -44,13 +44,6 @@
           <v-icon
             small
             class="mr-2"
-            @click="downloadItem(item)"
-          >
-            mdi mdi-arrow-collapse-down
-          </v-icon>
-          <v-icon
-            small
-            class="mr-2"
             @click="editItem(item)"
           >
             mdi-pencil
@@ -68,14 +61,14 @@
 </template>
 
 <script>
-  import moment from 'moment'
   export default {
-    name: 'Posts',
+    name: 'Users',
     data: () => ({
       headers: [
-        { text: 'Наименование', value: 'name' },
-        { sortable: false, text: 'Описание', value: 'description' },
-        { text: 'Дата добавления', value: 'date', class: 'created_at' },
+        { text: 'Идентификатор', value: 'id' },
+        { text: 'Имя', value: 'name' },
+        { text: 'Электронная почта', value: 'email', class: 'email' },
+        { text: 'Дата регистрации', value: 'created_at', class: 'created_at' },
         { sortable: false, text: 'Действия', value: 'actions', class: 'actions' },
       ],
       items: [],
@@ -84,20 +77,9 @@
     }),
     created () {
       this.loading = true
-      this.$http.get('post')
+      this.$http.get('user')
         .then(({ data }) => {
-          data.data.forEach((el) => {
-            el.attachments.forEach((el2) => {
-              this.items.push({
-                id: el.id,
-                name: el.name,
-                description: el.description,
-                file_type: el2.extension,
-                source: el2.source,
-                date: moment(el.created_at).format('YYYY-MM-DD HH:mm'),
-              })
-            })
-          })
+          this.items = data.data
         })
         .catch(error => console.error(error))
       this.loading = false
@@ -106,29 +88,29 @@
       editItem (item) {
       },
       deleteItem (item) {
-        console.log(item)
-        this.$http.delete(`post/${item.id}`)
-          .then(() => {
+        this.$http.delete(`user/${item.id}`)
+          .then((data) => {
             this.items.splice(this.items.findIndex(({ id }) => id === item.id), 1)
-          })
-          .catch(error => {
-            console.error(error)
           })
       },
       downloadItem (item) {
-        window.open(`${process.env.VUE_APP_API_ROOT_URL}/download/?filename=${item.source}`)
+        // Todo make generate download link
+        const popout = window.open(`${process.env.VUE_APP_API_ROOT_URL}/storage/${item.source}`)
+        window.setTimeout(() => {
+          popout.close()
+        })
       },
     },
   }
 </script>
 <style lang="scss">
-  th.actions {
-    min-width: 110px;
-  }
-  th.created_at {
-    min-width: 150px;
-  }
-  th.file_size {
-    min-width: 100px;
-  }
+th.actions {
+  min-width: 110px;
+}
+th.created_at {
+  min-width: 150px;
+}
+th.file_size {
+  min-width: 100px;
+}
 </style>
