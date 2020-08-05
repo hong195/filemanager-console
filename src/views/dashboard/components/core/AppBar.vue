@@ -23,7 +23,7 @@
 
     <v-toolbar-title
       class="hidden-sm-and-down"
-      v-text="$route.name"
+      v-text="$route.meta.title"
     />
 
     <v-spacer />
@@ -51,7 +51,6 @@
         { title: 'Log out' },
       ],
     }),
-
     computed: {
       ...mapState(['drawer']),
     },

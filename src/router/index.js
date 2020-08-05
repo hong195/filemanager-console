@@ -16,22 +16,29 @@ const router = new Router({
       component: () => import('@/views/pages/Index'),
       children: [
         {
-          name: 'Lock',
+          name: 'lock',
           path: 'lock',
           component: () => import('@/views/pages/Lock'),
           meta: {
             middleware: [auth],
+            title: 'Блок',
           },
         },
         {
-          name: 'Login',
+          name: 'login',
           path: 'login',
           component: () => import('@/views/pages/Login'),
+          meta: {
+            title: 'Авторизация',
+          },
         },
         {
-          name: 'Register',
+          name: 'register',
           path: 'register',
           component: () => import('@/views/pages/Register'),
+          meta: {
+            title: 'Регистрация',
+          },
         },
       ],
     },
@@ -49,35 +56,39 @@ const router = new Router({
           },
         },
         {
-          name: 'Список Записей',
+          name: 'posts-list',
           path: 'posts',
           component: () => import('@/views/dashboard/Posts'),
           meta: {
             middleware: [auth],
+            title: 'Добавление записи',
           },
         },
         {
-          name: 'Добавление записи',
+          name: 'post_add',
           path: 'posts/create',
           component: () => import('@/views/dashboard/PostCreate'),
           meta: {
             middleware: [admin],
+            title: 'Добавление записи',
           },
         },
         {
-          name: 'Список Категорий',
+          name: 'category-list',
           path: 'category',
           component: () => import('@/views/dashboard/Category'),
           meta: {
             middleware: [auth],
+            title: 'Список Категорий',
           },
         },
         {
-          name: 'Пользователи',
+          name: 'users',
           path: 'users',
           component: () => import('@/views/dashboard/Users'),
           meta: {
             middleware: [admin],
+            title: 'Пользователи',
           },
         },
       ],
@@ -87,9 +98,12 @@ const router = new Router({
       component: () => import('@/views/pages/Index'),
       children: [
         {
-          name: '404 Error',
+          name: '404',
           path: '',
           component: () => import('@/views/pages/Error'),
+          meta: {
+            title: 'Страница не найдена',
+          },
         },
       ],
     },
