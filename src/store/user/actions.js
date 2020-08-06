@@ -1,4 +1,5 @@
 import axios from 'axios'
+import authConfig from './utils'
 
 export default {
   login ({ commit }, credentials) {
@@ -12,7 +13,7 @@ export default {
       })
   },
   logOut ({ commit }) {
-    return axios.post('auth/logout')
+    return axios.post('auth/logout', '', authConfig())
       .then(() => {
         commit('authFailed')
       })
@@ -30,15 +31,8 @@ export default {
         commit('authFailed')
       })
   },
-  checkUser ({ commit, state }) {
-    const token = localStorage.getItem('token')
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-    if (!token) {
-      return
-    }
-    return axios.post('auth/me', '', config)
+  checkUser ({ commit }) {
+    return axios.post('auth/me', '', authConfig())
       .then(({ data }) => {
         commit('authSuccess', data)
         return Promise.resolve(data)

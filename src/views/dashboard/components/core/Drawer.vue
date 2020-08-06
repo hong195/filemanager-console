@@ -56,6 +56,7 @@
           v-if="item.children"
           :key="`group-${i}`"
           :item="item"
+          @logout="onLogout"
         >
           <!--  -->
         </base-item-group>
@@ -72,7 +73,7 @@
 
 <script>
   // Utilities
-  import { mapGetters, mapState } from 'vuex'
+  import { mapGetters, mapState, mapActions } from 'vuex'
 
   export default {
     name: 'DashboardCoreDrawer',
@@ -110,15 +111,16 @@
           children: [
             {
               to: '',
+              name: 'my-profile',
               title: this.$t('my-profile'),
             },
             {
-              to: '',
-              title: this.$t('edit-profile'),
-            },
-            {
-              to: '',
-              title: this.$t('settings'),
+              to: undefined,
+              name: 'logout',
+              title: 'Выйти',
+              callback: () => {
+                this.logOut()
+              },
             },
           ],
         }
@@ -132,6 +134,7 @@
     },
 
     methods: {
+      ...mapActions('user', ['logOut']),
       setItems () {
         return [
           {
@@ -143,14 +146,12 @@
             group: 'category',
             icon: 'mdi-view-comfy',
             title: 'Категории',
-            meta: 'isAdmin',
             to: '/category',
           },
           {
             group: '/users',
             icon: 'mdi-account-multiple',
             title: 'Пользователи',
-            meta: 'isAdmin',
             to: '/users',
           },
         ]

@@ -8,7 +8,9 @@
   export default {
     name: 'App',
     created () {
-      this.checkUser()
+      setTimeout(() => {
+        this.checkUser()
+      }, 3599)
     },
     methods: {
       ...mapActions('user', ['checkUser']),

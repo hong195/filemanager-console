@@ -32,7 +32,6 @@
         :key="`sub-group-${i}`"
         :item="child"
       />
-
       <base-item
         v-else
         :key="`item-${i}`"
