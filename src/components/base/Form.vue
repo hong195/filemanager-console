@@ -32,7 +32,6 @@
         :error-messages="errors.collect(`${scope}.${formField.text}`)"
         :items="formField.options"
         :label="formField.text"
-        class="ml-5"
         color="secondary"
         item-color="secondary"
       />
@@ -43,7 +42,6 @@
         :data-vv-name="formField.text"
         :error-messages="errors.collect(`${scope}.${formField.text}`)"
         :label="formField.text"
-        class="ml-4"
         outlined
       />
       <v-file-input
@@ -53,7 +51,6 @@
         :data-vv-name="formField.text"
         :display-size="1000"
         :error-messages="errors.collect(`${scope}.${formField.text}`)"
-        class="ml-4"
         color="deep-purple accent-4"
         outlined
         placeholder="Выбирите файл для загрузки"
