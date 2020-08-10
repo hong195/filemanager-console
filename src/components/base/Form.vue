@@ -1,7 +1,6 @@
 <template>
   <v-form
     :data-vv-scope="scope"
-    class="pt-12"
     @submit.prevent="submit()"
   >
     <v-col
@@ -78,14 +77,7 @@
         </v-card-actions>
       </slot>
     </v-col>
-    <base-material-alert
-      v-show="message"
-      align="center"
-      color="success"
-      dismissible
-    >
-      {{ message }}
-    </base-material-alert>
+    <slot name="form-message" />
   </v-form>
 </template>
 
@@ -119,11 +111,14 @@
         type: Object,
         default: () => {},
       },
+      message: {
+        type: String,
+        default: '',
+      },
     },
     data: () => ({
       formPreloader: false,
       items: [],
-      message: '',
     }),
     methods: {
       submit () {

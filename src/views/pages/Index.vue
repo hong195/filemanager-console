@@ -15,7 +15,7 @@
     },
 
     created () {
-      this.$vuetify.theme.dark = true
+      this.$vuetify.theme.dark = this.$route.name !== 'login'
     },
 
     beforeDestroy () {

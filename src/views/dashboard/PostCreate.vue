@@ -94,7 +94,7 @@
           text: 'Файл',
           type: 'file',
           multiple: false,
-          rule: 'required',
+          rule: 'required|mimes:docx,pptx,doc,/mp4',
         },
       ],
       items: [],
@@ -105,21 +105,23 @@
       ...mapGetters('user', ['currentUser']),
     },
     created () {
-      this.$http.get('category')
-        .then(({ data }) => {
-          data.data.forEach((el) => {
-            this.items.push({
-              text: el.name,
-              value: el.id,
+      if (this.$router.id) {
+        this.$http.get('category')
+          .then(({ data }) => {
+            data.data.forEach((el) => {
+              this.items.push({
+                text: el.name,
+                value: el.id,
+              })
             })
           })
-        })
-        .then(() => {
-          const item = this.formFields.find((el) => {
-            return el.name === 'category_id'
+          .then(() => {
+            const item = this.formFields.find((el) => {
+              return el.name === 'category_id'
+            })
+            item.options = this.items
           })
-          item.options = this.items
-        })
+      }
     },
     methods: {
       addPost () {

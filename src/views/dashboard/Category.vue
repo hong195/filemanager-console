@@ -31,7 +31,6 @@
       />
 
       <v-divider class="mt-3" />
-
       <v-data-table
         :headers="headers"
         :items="items"
@@ -53,6 +52,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
+                  v-if="isAdmin"
                   color="primary"
                   dark
                   class="mb-2"
@@ -101,19 +101,21 @@
           </v-toolbar>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon
-            small
-            class="mr-2"
-            @click="setItem(item)"
-          >
-            mdi-pencil
-          </v-icon>
-          <v-icon
-            small
-            @click="deleteItem(item)"
-          >
-            mdi-delete
-          </v-icon>
+          <div v-if="isAdmin">
+            <v-icon
+              small
+              class="mr-2"
+              @click="setItem(item)"
+            >
+              mdi-pencil
+            </v-icon>
+            <v-icon
+              small
+              @click="deleteItem(item)"
+            >
+              mdi-delete
+            </v-icon>
+          </div>
         </template>
       </v-data-table>
     </base-material-card>
@@ -121,6 +123,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   export default {
     name: 'Category',
     data: () => ({
@@ -128,13 +131,6 @@
       scope: 'category-form',
       requestType: 'post',
       currentItemId: '',
-      headers: [
-        { text: 'Идентификатор', value: 'id' },
-        { text: 'Наименование', value: 'name' },
-        { text: 'Количество записей', value: 'count', class: 'count' },
-        { text: 'Дата добавления', value: 'date', class: 'created_at' },
-        { sortable: false, text: 'Действия', value: 'actions', class: 'actions' },
-      ],
       formFields: [
         { text: 'Название', name: 'name', type: 'text', value: '', rule: 'required' },
         { text: 'Слаг', name: 'slug', type: 'text', value: '', rule: 'required' },
@@ -143,6 +139,23 @@
       search: undefined,
       loading: false,
     }),
+    computed: {
+      ...mapState('user', ['isAdmin']),
+      headers () {
+        return [
+          { text: 'Идентификатор', value: 'id' },
+          { text: 'Наименование', value: 'name' },
+          { text: 'Количество записей', value: 'count', class: 'count' },
+          { text: 'Дата добавления', value: 'created_at', class: 'date' },
+          { sortable: false, text: 'Действия', value: 'actions', class: 'actions', guarded: true },
+        ].filter((header) => {
+          if (this.isAdmin) {
+            return header
+          }
+          return !header.guarded
+        })
+      },
+    },
     created () {
       this.fetch()
     },

@@ -32,27 +32,24 @@ const router = new Router({
             title: 'Авторизация',
           },
         },
-        {
-          name: 'register',
-          path: 'register',
-          component: () => import('@/views/pages/Register'),
-          meta: {
-            title: 'Регистрация',
-          },
-        },
       ],
     },
     {
       path: '/',
       component: () => import('@/views/dashboard/Index'),
+      meta: {
+        middleware: [auth],
+        title: 'Главная',
+      },
       children: [
         // Dashboard
         {
-          name: 'Главная',
+          name: 'home',
           path: '',
           component: () => import('@/views/dashboard/Posts'),
           meta: {
             middleware: [auth],
+            title: 'Главная',
           },
         },
         {

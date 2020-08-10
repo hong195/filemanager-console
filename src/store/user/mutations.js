@@ -4,6 +4,7 @@ export default {
     state.isLoggedIn = false
     state.isActive = false
     state.authError = true
+    state.isAdmin = false
     localStorage.removeItem('token')
   },
   authSuccess (state, payload) {
@@ -15,6 +16,9 @@ export default {
     if (payload.access_token) {
       state.token = payload.access_token
       localStorage.setItem('token', payload.access_token)
+    }
+    if (payload.user.roles && payload.user.roles.includes('admin')) {
+      state.isAdmin = true
     }
   },
 }

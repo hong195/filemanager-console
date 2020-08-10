@@ -10,6 +10,7 @@ export default {
       .catch((error) => {
         console.error(error)
         commit('authFailed')
+        return Promise.reject(error)
       })
   },
   logOut ({ commit }) {
@@ -29,6 +30,7 @@ export default {
       .catch((error) => {
         console.error(error)
         commit('authFailed')
+        return Promise.reject(error)
       })
   },
   checkUser ({ commit }) {

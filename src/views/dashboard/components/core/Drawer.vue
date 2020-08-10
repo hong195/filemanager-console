@@ -49,8 +49,6 @@
       expand
       nav
     >
-      <!-- Style cascading bug  -->
-      <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
       <template v-for="(item, i) in computedItems">
         <base-item-group
           v-if="item.children"
@@ -72,7 +70,7 @@
 </template>
 
 <script>
-  // Utilities
+// Utilities
   import { mapGetters, mapState, mapActions } from 'vuex'
 
   export default {
@@ -91,6 +89,7 @@
 
     computed: {
       ...mapState(['barColor', 'barImage']),
+      ...mapState('user', ['isAdmin']),
       ...mapGetters('user', ['currentUser']),
       drawer: {
         get () {
@@ -120,6 +119,7 @@
               title: 'Выйти',
               callback: () => {
                 this.logOut()
+                this.$router.push({ name: 'login' })
               },
             },
           ],
@@ -143,6 +143,13 @@
             to: '/',
           },
           {
+            group: '',
+            icon: 'mdi-application',
+            title: 'Добавление записи',
+            to: '/posts/create',
+            guarded: true,
+          },
+          {
             group: 'category',
             icon: 'mdi-view-comfy',
             title: 'Категории',
@@ -153,8 +160,14 @@
             icon: 'mdi-account-multiple',
             title: 'Пользователи',
             to: '/users',
+            guarded: true,
           },
-        ]
+        ].filter(item => {
+          if (!this.isAdmin) {
+            return !item.guarded
+          }
+          return item
+        })
       },
       mapItem (item) {
         return {
@@ -168,65 +181,65 @@
 </script>
 
 <style lang="sass">
-  @import '~vuetify/src/styles/tools/_rtl.sass'
+@import '~vuetify/src/styles/tools/_rtl.sass'
 
-  #core-navigation-drawer
-    &.v-navigation-drawer--mini-variant
-      .v-list-item
-        justify-content: flex-start !important
+#core-navigation-drawer
+  &.v-navigation-drawer--mini-variant
+    .v-list-item
+      justify-content: flex-start !important
 
-      .v-list-group--sub-group
-        display: block !important
+    .v-list-group--sub-group
+      display: block !important
 
-    .v-list-group__header.v-list-item--active:before
-      opacity: .24
+  .v-list-group__header.v-list-item--active:before
+    opacity: .24
 
+  .v-list-item
+    &__icon--text,
+    &__icon:first-child
+      justify-content: center
+      text-align: center
+      width: 20px
+
+      +ltr()
+        margin-right: 24px
+        margin-left: 12px !important
+
+      +rtl()
+        margin-left: 24px
+        margin-right: 12px !important
+
+  .v-list--dense
     .v-list-item
       &__icon--text,
       &__icon:first-child
-        justify-content: center
-        text-align: center
-        width: 20px
+        margin-top: 10px
+
+  .v-list-group--sub-group
+    .v-list-item
+      +ltr()
+        padding-left: 8px
+
+      +rtl()
+        padding-right: 8px
+
+    .v-list-group__header
+      +ltr()
+        padding-right: 0
+
+      +rtl()
+        padding-right: 0
+
+      .v-list-item__icon--text
+        margin-top: 19px
+        order: 0
+
+      .v-list-group__header__prepend-icon
+        order: 2
 
         +ltr()
-          margin-right: 24px
-          margin-left: 12px !important
+          margin-right: 8px
 
         +rtl()
-          margin-left: 24px
-          margin-right: 12px !important
-
-    .v-list--dense
-      .v-list-item
-        &__icon--text,
-        &__icon:first-child
-          margin-top: 10px
-
-    .v-list-group--sub-group
-      .v-list-item
-        +ltr()
-          padding-left: 8px
-
-        +rtl()
-          padding-right: 8px
-
-      .v-list-group__header
-        +ltr()
-          padding-right: 0
-
-        +rtl()
-          padding-right: 0
-
-        .v-list-item__icon--text
-          margin-top: 19px
-          order: 0
-
-        .v-list-group__header__prepend-icon
-          order: 2
-
-          +ltr()
-            margin-right: 8px
-
-          +rtl()
-            margin-left: 8px
+          margin-left: 8px
 </style>
