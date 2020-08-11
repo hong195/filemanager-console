@@ -104,25 +104,6 @@
     computed: {
       ...mapGetters('user', ['currentUser']),
     },
-    created () {
-      if (this.$router.id) {
-        this.$http.get('category')
-          .then(({ data }) => {
-            data.data.forEach((el) => {
-              this.items.push({
-                text: el.name,
-                value: el.id,
-              })
-            })
-          })
-          .then(() => {
-            const item = this.formFields.find((el) => {
-              return el.name === 'category_id'
-            })
-            item.options = this.items
-          })
-      }
-    },
     methods: {
       addPost () {
         this.loading = true
@@ -158,6 +139,11 @@
 .v-snack__content {
   .v-alert {
     width: 100%;
+    .v-btn {
+      i {
+        margin-top: 12px;
+      }
+    }
   }
 }
 </style>

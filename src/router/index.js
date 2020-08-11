@@ -35,6 +35,7 @@ const router = new Router({
       ],
     },
     {
+      group: 'menu',
       path: '/',
       component: () => import('@/views/dashboard/Index'),
       meta: {
@@ -68,6 +69,24 @@ const router = new Router({
           meta: {
             middleware: [admin],
             title: 'Добавление записи',
+          },
+        },
+        {
+          name: 'user_create',
+          path: 'user/create',
+          component: () => import('@/views/dashboard/UserCreate'),
+          meta: {
+            middleware: [admin],
+            title: '',
+          },
+        },
+        {
+          name: 'user_update',
+          path: 'user/:id',
+          component: () => import('@/views/dashboard/UserCreate'),
+          meta: {
+            middleware: [admin],
+            title: '',
           },
         },
         {

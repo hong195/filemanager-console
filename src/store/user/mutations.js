@@ -17,7 +17,8 @@ export default {
       state.token = payload.access_token
       localStorage.setItem('token', payload.access_token)
     }
-    if (payload.user.roles && payload.user.roles.includes('admin')) {
+
+    if (payload.user.role && ['admin', 'Админ'].includes(payload.user.role.name)) {
       state.isAdmin = true
     }
   },

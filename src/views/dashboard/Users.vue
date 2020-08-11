@@ -85,7 +85,11 @@
       this.loading = false
     },
     methods: {
-      editItem (item) {
+      editItem (user) {
+        this.$router.push({
+          name: 'user_update',
+          params: { id: user.id },
+        })
       },
       deleteItem (item) {
         this.$http.delete(`user/${item.id}`)
@@ -94,7 +98,6 @@
           })
       },
       downloadItem (item) {
-        // Todo make generate download link
         const popout = window.open(`${process.env.VUE_APP_API_ROOT_URL}/storage/${item.source}`)
         window.setTimeout(() => {
           popout.close()

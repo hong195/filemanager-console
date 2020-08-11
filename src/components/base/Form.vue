@@ -21,7 +21,6 @@
         :data-vv-name="formField.text"
         :error-messages="errors.collect(`${scope}.${formField.text}`)"
         :label="formField.text"
-        outlined
       />
       <v-select
         v-else-if="formField.type === 'select'"
@@ -31,8 +30,8 @@
         :error-messages="errors.collect(`${scope}.${formField.text}`)"
         :items="formField.options"
         :label="formField.text"
-        color="secondary"
-        item-color="secondary"
+        color="primary"
+        item-color="primary"
       />
       <v-textarea
         v-else-if="formField.type === 'textarea'"
@@ -41,7 +40,6 @@
         :data-vv-name="formField.text"
         :error-messages="errors.collect(`${scope}.${formField.text}`)"
         :label="formField.text"
-        outlined
       />
       <v-file-input
         v-else-if="formField.type === 'file'"
@@ -51,7 +49,6 @@
         :display-size="1000"
         :error-messages="errors.collect(`${scope}.${formField.text}`)"
         color="deep-purple accent-4"
-        outlined
         placeholder="Выбирите файл для загрузки"
         prepend-icon="mdi-paperclip"
       />
@@ -120,6 +117,14 @@
       formPreloader: false,
       items: [],
     }),
+    watch: {
+      currentItem: {
+        handler (data) {
+          this.setFieldsValues(data)
+        },
+        deep: true,
+      },
+    },
     methods: {
       submit () {
         this.validateForm(this.scope)
@@ -133,6 +138,16 @@
           obj[el.name] = el.value
         })
         return obj
+      },
+      setFieldsValues (data) {
+        this.formFields.forEach((field) => {
+          if (data[field.name]) {
+            field.value = data[field.name]
+          }
+          if (typeof data[field.name] === 'object' && !data[field.name].length) {
+            field.value = data[field.name].id
+          }
+        })
       },
       fillForm (item) {
         this.formFields.forEach(el => {

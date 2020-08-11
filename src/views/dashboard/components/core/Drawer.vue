@@ -162,6 +162,11 @@
             to: '/users',
             guarded: true,
           },
+          {
+            icon: 'mdi-account-multiple-plus',
+            title: 'Добавит пользователя',
+            to: '/user/create',
+          },
         ].filter(item => {
           if (!this.isAdmin) {
             return !item.guarded
