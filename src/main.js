@@ -4,9 +4,14 @@ import store from './store'
 import router from './router'
 import './plugins/base'
 import './plugins/vee-validate'
+import './plugins/font-awesome'
 import vuetify from './plugins/vuetify'
 import i18n from './i18n'
+import VueVideoPlayer from 'vue-video-player'
 
+// require videojs style
+import 'video.js/dist/video-js.css'
+Vue.use(VueVideoPlayer)
 Vue.config.productionTip = false
 
 function boot () {

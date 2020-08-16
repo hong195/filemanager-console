@@ -59,7 +59,6 @@
   import { mapGetters } from 'vuex'
   import ValidatorMixin from '@/mixins/ValidatorMixin'
   export default {
-    name: 'PostCreate',
     mixins: [ValidatorMixin],
     data: () => ({
       scope: 'post-form',
@@ -94,15 +93,33 @@
           text: 'Файл',
           type: 'file',
           multiple: false,
-          rule: 'required|mimes:docx,pptx,doc,/mp4',
+          rule: 'required|mimes:docx,xlsx,pptx,doc,pdf,mp4',
         },
       ],
       items: [],
       loading: false,
       snackbar: false,
+      dialog: false,
     }),
     computed: {
       ...mapGetters('user', ['currentUser']),
+    },
+    created () {
+      this.$http.get('category')
+        .then(({ data }) => {
+          data.data.forEach((el) => {
+            this.items.push({
+              text: el.name,
+              value: el.id,
+            })
+          })
+        })
+        .then(() => {
+          const item = this.formFields.find((el) => {
+            return el.name === 'category_id'
+          })
+          item.options = this.items
+        })
     },
     methods: {
       addPost () {

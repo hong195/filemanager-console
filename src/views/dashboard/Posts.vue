@@ -41,10 +41,15 @@
         :calculate-widths="true"
       >
         <template v-slot:item.actions="{ item }">
+          <font-awesome-icon
+            icon="eye"
+            class="mr-2"
+            @click.prevent="view(item)"
+          />
           <v-icon
             small
             class="mr-2"
-            @click="downloadItem(item)"
+            @click="downloadFile(item.file_id)"
           >
             mdi mdi-arrow-collapse-down
           </v-icon>
@@ -64,13 +69,45 @@
         </template>
       </v-data-table>
     </base-material-card>
+    <v-dialog
+      v-model="dialog"
+      :content-class="isDocumentType(activeItem.file_name) ? 'full-width' : 'auto-width'"
+      :width="isDocumentType(activeItem.file_name) ? '100%' : 'auto'"
+      :height="isDocumentType(activeItem.file_name) ? '100%' : '350px'"
+      @click:outside="onModalClose()"
+    >
+      <div
+        v-if="isVideoType(activeItem.file_name)"
+      >
+        <custom-video-player
+          ref="player"
+          :url="activeItem.url"
+        />
+      </div>
+      <div
+        v-else-if="isDocumentType(activeItem.file_name)"
+      >
+        <document-previewer
+          :url="activeItem.url"
+        />
+      </div>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
   import moment from 'moment'
+  import DocumentPreviewer from '@/components/DocumentPreviewer'
+  import CustomVideoPlayer from '@/components/VideoPlayer'
+  import FileMixin from '@/mixins/FileMixin'
+
   export default {
     name: 'Posts',
+    components: {
+      CustomVideoPlayer,
+      DocumentPreviewer,
+    },
+    mixins: [FileMixin],
     data: () => ({
       headers: [
         { text: 'Наименование', value: 'name' },
@@ -79,8 +116,10 @@
         { sortable: false, text: 'Действия', value: 'actions', class: 'actions' },
       ],
       items: [],
+      activeItem: '',
       search: undefined,
       loading: false,
+      dialog: false,
     }),
     created () {
       this.loading = true
@@ -91,9 +130,11 @@
               this.items.push({
                 id: el.id,
                 name: el.name,
+                file_id: el2.id,
+                file_name: el2.file_name,
                 description: el.description,
-                file_type: el2.extension,
-                source: el2.source,
+                mime_type: el2.mime_type,
+                url: el2.url,
                 date: moment(el.created_at).format('YYYY-MM-DD HH:mm'),
               })
             })
@@ -105,8 +146,11 @@
     methods: {
       editItem (item) {
       },
+      view (item) {
+        this.activeItem = item
+        this.dialog = true
+      },
       deleteItem (item) {
-        console.log(item)
         this.$http.delete(`post/${item.id}`)
           .then(() => {
             this.items.splice(this.items.findIndex(({ id }) => id === item.id), 1)
@@ -115,8 +159,11 @@
             console.error(error)
           })
       },
-      downloadItem (item) {
-        window.open(`${process.env.VUE_APP_API_ROOT_URL}/download/?filename=${item.source}`)
+      onModalClose () {
+        if (!this.isVideoType(this.activeItem.source)) {
+          return
+        }
+        this.$refs.player.pause()
       },
     },
   }
@@ -130,5 +177,15 @@
   }
   th.file_size {
     min-width: 100px;
+  }
+  svg {
+    cursor: pointer;
+  }
+  .full-width {
+    width: 100% !important;
+    height: 100%;
+  }
+  .auto-width {
+    width: auto !important;
   }
 </style>
