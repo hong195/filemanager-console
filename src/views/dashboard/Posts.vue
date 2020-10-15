@@ -19,15 +19,35 @@
         </div>
       </template>
 
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        class="ml-auto"
-        hide-details
-        label="Поиск"
-        single-line
-        style="max-width: 250px;"
-      />
+      <div style="display:flex; flex-wrap: wrap; margin-left: auto; justify-content: flex-end;">
+        <treeselect
+          v-model="searchOptions.category"
+          :options="categories"
+          placeholder="Категория"
+          no-options-text="Нет доступных значений"
+          no-results-text="Нет доступных значений"
+          no-children-text="Нет доступных значений"
+          style="margin: 20px 10px 0 0; max-width: 200px;"
+        />
+
+        <treeselect
+          v-model="searchOptions.mime_type"
+          :options="allowedMimeTypes"
+          placeholder="Расширение Файла"
+          no-options-text="Нет доступных значений"
+          no-results-text="Нет доступных значений"
+          no-children-text="Нет доступных значений"
+          style="margin: 20px 10px 0 0; max-width: 200px;"
+        />
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          hide-details
+          label="Поиск"
+          single-line
+          style="max-width: 250px;"
+        />
+      </div>
 
       <v-divider class="mt-3" />
 
@@ -40,32 +60,54 @@
         loading-text="Загрузка..."
         :calculate-widths="true"
       >
-        <template v-slot:item.actions="{ item }">
-          <font-awesome-icon
-            icon="eye"
-            class="mr-2"
-            @click.prevent="view(item)"
-          />
-          <v-icon
-            small
-            class="mr-2"
-            @click="downloadFile(item.file_id)"
+        <template v-slot:item="{ item }">
+          <tr
+            style="position: relative"
           >
-            mdi mdi-arrow-collapse-down
-          </v-icon>
-          <v-icon
-            small
-            class="mr-2"
-            @click="editItem(item)"
-          >
-            mdi-pencil
-          </v-icon>
-          <v-icon
-            small
-            @click="deleteItem(item)"
-          >
-            mdi-delete
-          </v-icon>
+            <td>
+              {{ item.name }}
+            </td>
+            <td>
+              {{ item.excerpt }}
+            </td>
+            <td>
+              {{ item.date }}
+            </td>
+            <td>
+              <font-awesome-icon
+                icon="eye"
+                class="mr-2"
+                @click.prevent="view(item)"
+              />
+              <v-icon
+                small
+                class="mr-2"
+                @click="downloadFile(item.file_id)"
+              >
+                mdi mdi-arrow-collapse-down
+              </v-icon>
+              <!--          <v-icon-->
+              <!--            v-if="isAdmin"-->
+              <!--            small-->
+              <!--            class="mr-2"-->
+              <!--            @click="editItem(item)"-->
+              <!--          >-->
+              <!--            mdi-pencil-->
+              <!--          </v-icon>-->
+              <v-icon
+                v-if="isAdmin"
+                small
+                @click="deleteItem(item)"
+              >
+                mdi-delete
+              </v-icon>
+            </td>
+            <td v-if="item.full_description">
+              <span class="spnTooltip">
+                <span>{{ item.full_description }}</span>
+              </span>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </base-material-card>
@@ -96,52 +138,50 @@
 </template>
 
 <script>
-  import moment from 'moment'
   import DocumentPreviewer from '@/components/DocumentPreviewer'
   import CustomVideoPlayer from '@/components/VideoPlayer'
   import FileMixin from '@/mixins/FileMixin'
+  import { mapState } from 'vuex'
+  import Treeselect from '@riophae/vue-treeselect'
+  import allowedMimeTypes from '@/utils/utils'
 
   export default {
     name: 'Posts',
     components: {
       CustomVideoPlayer,
       DocumentPreviewer,
+      Treeselect,
     },
     mixins: [FileMixin],
     data: () => ({
-      headers: [
-        { text: 'Наименование', value: 'name' },
-        { sortable: false, text: 'Описание', value: 'description' },
-        { text: 'Дата добавления', value: 'date', class: 'created_at' },
-        { sortable: false, text: 'Действия', value: 'actions', class: 'actions' },
-      ],
       items: [],
       activeItem: '',
       search: undefined,
       loading: false,
       dialog: false,
+      categories: [],
+      allowedMimeTypes,
+      searchOptions: {
+        mime_type: null,
+        category: null,
+      },
     }),
+    computed: {
+      ...mapState('user', ['isAdmin']),
+      headers () {
+        return [
+          { text: 'Наименование', value: 'name' },
+          { sortable: false, text: 'Краткое описание', value: 'excerpt' },
+          { text: 'Дата добавления', value: 'date', class: 'created_at' },
+          { sortable: false, text: 'Действия', value: 'actions', class: 'actions' },
+        ]
+      },
+    },
     created () {
-      this.loading = true
-      this.$http.get('post')
-        .then(({ data }) => {
-          data.data.forEach((el) => {
-            el.attachments.forEach((el2) => {
-              this.items.push({
-                id: el.id,
-                name: el.name,
-                file_id: el2.id,
-                file_name: el2.file_name,
-                description: el.description,
-                mime_type: el2.mime_type,
-                url: el2.url,
-                date: moment(el.created_at).format('YYYY-MM-DD HH:mm'),
-              })
-            })
-          })
-        })
-        .catch(error => console.error(error))
-      this.loading = false
+      this.loadOptions()
+    },
+    mounted () {
+      this.$watch('searchOptions', this.searchFiles, { deep: true, immediate: true })
     },
     methods: {
       editItem (item) {
@@ -160,10 +200,61 @@
           })
       },
       onModalClose () {
-        if (!this.isVideoType(this.activeItem.source)) {
+        if (!this.isVideoType(this.activeItem.file_name)) {
           return
         }
         this.$refs.player.pause()
+      },
+      loadOptions () {
+        this.$http.get('category?with_children=1')
+          .then(({ data }) => {
+            this.categories = []
+            data.data.forEach((el) => {
+              const item = {
+                id: el.id,
+                label: el.name,
+              }
+              if (el.children.length) {
+                item.children = el.children.map((el2) => ({
+                  id: el2.id,
+                  label: el2.name,
+                }))
+              }
+              this.categories.push(item)
+            })
+          })
+      },
+      searchFiles () {
+        this.loading = true
+        this.$http.get('post', {
+          params: {
+            category_id: this.searchOptions.category,
+            mime_type: this.searchOptions.mime_type,
+          },
+        })
+          .then(({ data }) => {
+            this.items = []
+            data.data.forEach((el) => {
+              el.attachments.forEach((el2) => {
+                this.items.push({
+                  id: el.id,
+                  name: el.name,
+                  file_id: el2.id,
+                  file_name: el2.file_name,
+                  excerpt: el.excerpt,
+                  full_description: el.full_description,
+                  mime_type: el2.mime_type,
+                  url: el2.url,
+                  date: el.created_at,
+                })
+              })
+            })
+            this.loading = false
+          })
+          .catch((error) => {
+            console.error(error)
+            this.loading = false
+          })
       },
     },
   }
@@ -187,5 +278,46 @@
   }
   .auto-width {
     width: auto !important;
+  }
+  .tooltip {outline:none; }
+  .tooltip strong {line-height:30px;}
+  .tooltip:hover {text-decoration:none;}
+  .tooltip span {
+    z-index:10;display:none; padding:14px 20px;
+    margin-top:-30px; margin-left:28px;
+    width:95%; line-height:16px;
+    max-width: 95% !important;
+    height: auto;
+    left: 2%;
+  }
+  .tooltip:hover span{
+    display:inline; position:absolute; color:#111;
+    border:1px solid #DCA; background:#fffAF0;}
+  .callout {z-index:20;position:absolute;top:30px;border:0;left:-12px;}
+
+  /*CSS3 extras*/
+  .tooltip span
+  {
+    border-radius:4px;
+    box-shadow: 5px 5px 8px #CCC;
+  }
+
+  tr .spnTooltip {
+    z-index:10;display:none; padding:14px 20px;
+    margin-top:-30px; margin-left:28px;
+    width:300px; line-height:16px;
+    transition: .2s all;
+  }
+  tr:hover .spnTooltip{
+    transition: .2s all;
+    left: 0;
+    margin-top: 24px;
+    width: 95%;
+    display:inline; position:absolute; color:#111;
+    border:1px solid #DCA; background:#fffAF0;}
+  .spnTooltip {
+    &:hover {
+      display: none !important;
+    }
   }
 </style>

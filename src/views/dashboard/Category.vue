@@ -4,8 +4,8 @@
     tag="section"
   >
     <base-v-component
-      heading="Списко категорий"
-      sub-title="Списко категорий"
+      heading="Список категорий"
+      sub-title="Список категорий"
     />
 
     <base-material-card
@@ -127,13 +127,24 @@
   export default {
     name: 'Category',
     data: () => ({
+      options: [],
       dialog: false,
       scope: 'category-form',
       requestType: 'post',
       currentItemId: '',
       formFields: [
-        { text: 'Название', name: 'name', type: 'text', value: '', rule: 'required' },
-        { text: 'Слаг', name: 'slug', type: 'text', value: '', rule: 'required' },
+        {
+          text: 'Название', name: 'name', type: 'text', value: '', rule: 'required',
+        },
+        {
+          text: 'Родительская категория',
+          name: 'parent_id',
+          type: 'tree',
+          value: null,
+          rule: '',
+          options: [],
+          disableBranchNodes: false,
+        },
       ],
       items: [],
       search: undefined,
@@ -157,19 +168,48 @@
       },
     },
     created () {
-      this.fetch()
+      this.fetchCategories()
+      this.loadOptions()
     },
     methods: {
-      fetch () {
+      loadOptions () {
+        this.$http.get('category?with_children=1')
+          .then(({ data }) => {
+            const item = this.formFields.find((el) => {
+              return el.name === 'parent_id'
+            })
+            item.options = []
+            data.data.forEach((el) => {
+              if (el.children) {
+                el.children = el.children.map((el2) => ({
+                  id: el2.id,
+                  label: el2.name,
+                  isDisabled: true,
+                }))
+              }
+              item.options.push({
+                id: el.id,
+                label: el.name,
+                children: el.children || '',
+                isDisabled: false,
+              })
+            })
+          })
+      },
+      fetchCategories () {
         this.loading = true
         this.$http.get('category')
           .then(({ data }) => {
             this.items = data.data
+            this.loading = false
           })
-          .catch(error => console.error(error))
-        this.loading = false
+          .catch(error => {
+            console.error(error)
+            this.loading = false
+          })
       },
       add ($data) {
+        this.currentItemId = null
         this.requestType = 'post'
         this.$refs[this.scope].resetAll()
 
@@ -177,6 +217,8 @@
           .then(({ data }) => {
             this.items.push(data.data)
             this.dialog = false
+            this.fetchCategories()
+            this.loadOptions()
             this.$refs[this.scope].setPreloader(false)
             this.$refs[this.scope].resetAll()
           })
@@ -188,9 +230,11 @@
       update ($data) {
         this.$http.put(`category/${this.currentItemId}`, $data)
           .then(() => {
-            this.fetch()
+            this.fetchCategories()
+            this.loadOptions()
             this.dialog = false
             this.$refs[this.scope].resetAll()
+            this.requestType = 'post'
           })
           .catch((error) => {
             this.$refs[this.scope].setPreloader(false)
@@ -200,6 +244,7 @@
       deleteItem (item) {
         this.$http.delete(`category/${item.id}`)
           .then(() => {
+            this.loadOptions()
             this.items.splice(this.items.findIndex(({ id }) => id === item.id), 1)
           })
           .catch(error => {
@@ -208,6 +253,17 @@
       },
       setItem (item) {
         this.dialog = true
+        const cat = this.formFields.find((el) => {
+          return el.name === 'parent_id'
+        })
+
+        cat.options.forEach(el => {
+          el.isDisabled = el.id === item.id
+          el.children.forEach(el2 => {
+            el2.isDisabled = true
+          })
+        })
+
         setTimeout(() => {
           this.requestType = 'put'
           this.currentItemId = item.id

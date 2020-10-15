@@ -109,11 +109,6 @@
           title: this.currentUser.name,
           children: [
             {
-              to: '',
-              name: 'my-profile',
-              title: this.$t('my-profile'),
-            },
-            {
               to: undefined,
               name: 'logout',
               title: 'Выйти',
@@ -164,8 +159,9 @@
           },
           {
             icon: 'mdi-account-multiple-plus',
-            title: 'Добавит пользователя',
+            title: 'Добавить пользователя',
             to: '/user/create',
+            guarded: true,
           },
         ].filter(item => {
           if (!this.isAdmin) {

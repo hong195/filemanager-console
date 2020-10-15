@@ -8,7 +8,7 @@
         'v-image--sm': this.$vuetify.breakpoint.smAndDown,
         'v-image--md': this.$vuetify.breakpoint.mdAndDown
       }"
-      :src="require(`@/assets/${src || 'clint-mckoy.jpg'}`)"
+      :src="require(`@/assets/${src || 'bg.jpg'}`)"
       gradient="to top, rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)"
       min-height="100%"
     >
@@ -52,4 +52,6 @@
 
     .v-image--sm
       padding: 96px 0 188px 0
+    .v-image__image--cover
+      background-position: top !important
 </style>

@@ -14,25 +14,35 @@
       >
         {{ formField.title }}
       </v-subheader>
-      <v-text-field
-        v-if="formField.type === 'text'"
-        v-model="formField.value"
-        v-validate="formField.rule"
-        :data-vv-name="formField.text"
-        :error-messages="errors.collect(`${scope}.${formField.text}`)"
-        :label="formField.text"
-      />
-      <v-select
-        v-else-if="formField.type === 'select'"
-        v-model="formField.value"
-        v-validate="formField.rule"
-        :data-vv-name="formField.text"
-        :error-messages="errors.collect(`${scope}.${formField.text}`)"
-        :items="formField.options"
-        :label="formField.text"
-        color="primary"
-        item-color="primary"
-      />
+
+      <div v-if="formField.type === 'text'">
+        <slot name="text">
+          <v-text-field
+            v-model="formField.value"
+            v-validate="formField.rule"
+            :data-vv-name="formField.text"
+            :error-messages="errors.collect(`${scope}.${formField.text}`)"
+            :label="formField.text"
+          />
+        </slot>
+      </div>
+      <div v-else-if="formField.type === 'select'">
+        <slot
+          name="select"
+          :formField="{formField}"
+        >
+          <v-select
+            v-model="formField.value"
+            v-validate="formField.rule"
+            :data-vv-name="formField.text"
+            :error-messages="errors.collect(`${scope}.${formField.text}`)"
+            :items="formField.options"
+            :label="formField.text"
+            color="primary"
+            item-color="primary"
+          />
+        </slot>
+      </div>
       <v-textarea
         v-else-if="formField.type === 'textarea'"
         v-model="formField.value"
@@ -49,9 +59,28 @@
         :display-size="1000"
         :error-messages="errors.collect(`${scope}.${formField.text}`)"
         color="deep-purple accent-4"
-        placeholder="Выбирите файл для загрузки"
+        placeholder="Выберите файл для загрузки"
         prepend-icon="mdi-paperclip"
       />
+      <div v-else-if="formField.type === 'tree'">
+        <treeselect
+          ref="treeSelect"
+          v-model="formField.value"
+          v-validate="formField.rule"
+          :options="formField.options"
+          :placeholder="formField.text"
+          :disable-branch-nodes="formField.disableBranchNodes"
+          no-options-text="Нет доступных значений"
+          no-results-text="Нет доступных значений"
+          no-children-text="Нет доступных значений"
+          :data-vv-name="formField.text"
+          :error-messages="errors.collect(`${scope}.${formField.text}`)"
+          style="margin-top: 20px;"
+        />
+        <span style="color: #ff5252 !important; font-size: 12px;">
+          {{ errors.first(`${scope}.${formField.text}`) }}
+        </span>
+      </div>
     </v-col>
     <v-col>
       <slot
@@ -80,9 +109,14 @@
 
 <script>
   import ValidatorMixin from '@/mixins/ValidatorMixin'
+  import Treeselect from '@riophae/vue-treeselect'
+  import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
   export default {
     name: 'Form',
+    components: {
+      Treeselect,
+    },
     mixins: [ValidatorMixin],
     props: {
       formFields: {
@@ -135,7 +169,7 @@
       getFieldsValue () {
         const obj = {}
         this.formFields.forEach(el => {
-          obj[el.name] = el.value
+          obj[el.name] = el.value || null
         })
         return obj
       },
@@ -165,7 +199,7 @@
         })
       },
       resetFields () {
-        this.formFields.forEach(el => (el.value = ''))
+        this.formFields.forEach(el => (el.value = null))
       },
       setPreloader (value) {
         this.formPreloader = value
