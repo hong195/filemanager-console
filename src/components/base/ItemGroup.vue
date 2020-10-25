@@ -4,7 +4,11 @@
     :prepend-icon="item.icon"
     :sub-group="subGroup"
     append-icon="mdi-menu-down"
-    :color="barColor !== 'rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.7)' ? 'white' : 'grey darken-1'"
+    :color="
+      barColor !== 'rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.7)'
+        ? 'white'
+        : 'grey darken-1'
+    "
   >
     <template v-slot:activator>
       <v-list-item-icon
@@ -17,8 +21,9 @@
         v-else-if="item.avatar"
         class="align-self-center"
         color="grey"
+        tile
       >
-        <v-img src="https://demos.creative-tim.com/material-dashboard-pro/assets/img/faces/avatar.jpg" />
+        <v-img :src="item.avatar" />
       </v-list-item-avatar>
 
       <v-list-item-content>
@@ -109,7 +114,8 @@
             }
 
             return group
-          }).join('|')
+          })
+          .join('|')
       },
     },
   }

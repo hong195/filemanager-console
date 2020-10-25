@@ -27,7 +27,7 @@
         hide-details
         label="Поиск"
         single-line
-        style="max-width: 250px;"
+        style="max-width: 250px"
       />
 
       <v-divider class="mt-3" />
@@ -75,16 +75,10 @@
                   @post-form-request="add"
                   @put-form-request="update"
                 >
-                  <template v-slot:actions="{formPreloader}">
+                  <template v-slot:actions="{ formPreloader }">
                     <v-card-actions>
                       <v-spacer />
-                      <v-btn
-                        color="error"
-                        text
-                        @click="dialog = false"
-                      >
-                        Закрыть
-                      </v-btn>
+
                       <v-btn
                         color="blue darken-1"
                         text
@@ -92,6 +86,13 @@
                         :loading="formPreloader"
                       >
                         Сохранить
+                      </v-btn>
+                      <v-btn
+                        color="error"
+                        text
+                        @click="dialog = false"
+                      >
+                        Закрыть
                       </v-btn>
                     </v-card-actions>
                   </template>
@@ -134,7 +135,11 @@
       currentItemId: '',
       formFields: [
         {
-          text: 'Название', name: 'name', type: 'text', value: '', rule: 'required',
+          text: 'Название',
+          name: 'name',
+          type: 'text',
+          value: '',
+          rule: 'required',
         },
         {
           text: 'Родительская категория',
@@ -158,8 +163,14 @@
           { text: 'Наименование', value: 'name' },
           { text: 'Количество записей', value: 'count', class: 'count' },
           { text: 'Дата добавления', value: 'created_at', class: 'date' },
-          { sortable: false, text: 'Действия', value: 'actions', class: 'actions', guarded: true },
-        ].filter((header) => {
+          {
+            sortable: false,
+            text: 'Действия',
+            value: 'actions',
+            class: 'actions',
+            guarded: true,
+          },
+        ].filter(header => {
           if (this.isAdmin) {
             return header
           }
@@ -173,32 +184,32 @@
     },
     methods: {
       loadOptions () {
-        this.$http.get('category?with_children=1')
-          .then(({ data }) => {
-            const item = this.formFields.find((el) => {
-              return el.name === 'parent_id'
-            })
-            item.options = []
-            data.data.forEach((el) => {
-              if (el.children) {
-                el.children = el.children.map((el2) => ({
-                  id: el2.id,
-                  label: el2.name,
-                  isDisabled: true,
-                }))
-              }
-              item.options.push({
-                id: el.id,
-                label: el.name,
-                children: el.children || '',
-                isDisabled: false,
-              })
+        this.$http.get('category?with_children=1').then(({ data }) => {
+          const item = this.formFields.find(el => {
+            return el.name === 'parent_id'
+          })
+          item.options = []
+          data.data.forEach(el => {
+            if (el.children) {
+              el.children = el.children.map(el2 => ({
+                id: el2.id,
+                label: el2.name,
+                isDisabled: true,
+              }))
+            }
+            item.options.push({
+              id: el.id,
+              label: el.name,
+              children: el.children || '',
+              isDisabled: false,
             })
           })
+        })
       },
       fetchCategories () {
         this.loading = true
-        this.$http.get('category')
+        this.$http
+          .get('category')
           .then(({ data }) => {
             this.items = data.data
             this.loading = false
@@ -213,7 +224,8 @@
         this.requestType = 'post'
         this.$refs[this.scope].resetAll()
 
-        this.$http.post('category', $data)
+        this.$http
+          .post('category', $data)
           .then(({ data }) => {
             this.items.push(data.data)
             this.dialog = false
@@ -222,13 +234,14 @@
             this.$refs[this.scope].setPreloader(false)
             this.$refs[this.scope].resetAll()
           })
-          .catch((error) => {
+          .catch(error => {
             this.$refs[this.scope].setPreloader(false)
             console.error(error)
           })
       },
       update ($data) {
-        this.$http.put(`category/${this.currentItemId}`, $data)
+        this.$http
+          .put(`category/${this.currentItemId}`, $data)
           .then(() => {
             this.fetchCategories()
             this.loadOptions()
@@ -236,16 +249,20 @@
             this.$refs[this.scope].resetAll()
             this.requestType = 'post'
           })
-          .catch((error) => {
+          .catch(error => {
             this.$refs[this.scope].setPreloader(false)
             console.error(error)
           })
       },
       deleteItem (item) {
-        this.$http.delete(`category/${item.id}`)
+        this.$http
+          .delete(`category/${item.id}`)
           .then(() => {
             this.loadOptions()
-            this.items.splice(this.items.findIndex(({ id }) => id === item.id), 1)
+            this.items.splice(
+              this.items.findIndex(({ id }) => id === item.id),
+              1,
+            )
           })
           .catch(error => {
             console.error(error)
@@ -253,7 +270,7 @@
       },
       setItem (item) {
         this.dialog = true
-        const cat = this.formFields.find((el) => {
+        const cat = this.formFields.find(el => {
           return el.name === 'parent_id'
         })
 

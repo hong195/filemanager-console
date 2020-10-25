@@ -1,6 +1,7 @@
 <template>
   <v-form
     :data-vv-scope="scope"
+    lazy-validation
     @submit.prevent="submit()"
   >
     <v-col
@@ -18,6 +19,7 @@
       <div v-if="formField.type === 'text'">
         <slot name="text">
           <v-text-field
+            :id="formField.name"
             v-model="formField.value"
             v-validate="formField.rule"
             :data-vv-name="formField.text"
@@ -29,7 +31,7 @@
       <div v-else-if="formField.type === 'select'">
         <slot
           name="select"
-          :formField="{formField}"
+          :formField="{ formField }"
         >
           <v-select
             v-model="formField.value"
@@ -55,6 +57,7 @@
         v-else-if="formField.type === 'file'"
         v-model="formField.value"
         v-validate="formField.rule"
+        :value="formField.value"
         :data-vv-name="formField.text"
         :display-size="1000"
         :error-messages="errors.collect(`${scope}.${formField.text}`)"
@@ -75,9 +78,9 @@
           no-children-text="Нет доступных значений"
           :data-vv-name="formField.text"
           :error-messages="errors.collect(`${scope}.${formField.text}`)"
-          style="margin-top: 20px;"
+          style="margin-top: 20px"
         />
-        <span style="color: #ff5252 !important; font-size: 12px;">
+        <span style="color: #ff5252 !important; font-size: 12px">
           {{ errors.first(`${scope}.${formField.text}`) }}
         </span>
       </div>
@@ -122,7 +125,7 @@
       formFields: {
         type: Array,
         default: () => [],
-        validator: (arr) => {
+        validator: arr => {
           // Todo validation fields logic
           return true
         },
@@ -130,7 +133,7 @@
       formRequestType: {
         type: String,
         required: true,
-        validator: (value) => {
+        validator: value => {
           return ['post', 'get', 'put', 'delete'].includes(value.toLowerCase())
         },
       },
@@ -161,10 +164,12 @@
     },
     methods: {
       submit () {
-        this.validateForm(this.scope)
-          .then(() => {
-            this.$emit(`${this.formRequestType}-form-request`, this.getFieldsValue())
-          })
+        this.validateForm(this.scope).then(() => {
+          this.$emit(
+            `${this.formRequestType}-form-request`,
+            this.getFieldsValue(),
+          )
+        })
       },
       getFieldsValue () {
         const obj = {}
@@ -174,7 +179,7 @@
         return obj
       },
       setFieldsValues (data) {
-        this.formFields.forEach((field) => {
+        this.formFields.forEach(field => {
           if (data[field.name]) {
             field.value = data[field.name]
           }

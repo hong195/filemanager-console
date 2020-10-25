@@ -11,6 +11,8 @@ import VueVideoPlayer from 'vue-video-player'
 
 // require videojs style
 import 'video.js/dist/video-js.css'
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
 Vue.use(VueVideoPlayer)
 Vue.config.productionTip = false
 

@@ -72,6 +72,15 @@ const router = new Router({
           },
         },
         {
+          name: 'post_edit',
+          path: 'posts/edit',
+          component: () => import('@/views/dashboard/PostCreate'),
+          meta: {
+            middleware: [admin],
+            title: 'Редактировать записи',
+          },
+        },
+        {
           name: 'user_create',
           path: 'user/create',
           component: () => import('@/views/dashboard/UserCreate'),

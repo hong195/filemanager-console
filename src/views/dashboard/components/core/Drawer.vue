@@ -6,7 +6,7 @@
     :expand-on-hover="expandOnHover"
     :right="$vuetify.rtl"
     :src="barImage"
-    mobile-break-point="960"
+    mobile-breakpoint="960"
     app
     width="260"
     v-bind="$attrs"
@@ -26,9 +26,7 @@
       </v-list-item-content>
     </v-list-item>
 
-    <div
-      v-if="currentUser"
-    >
+    <div v-if="currentUser">
       <v-divider
         v-if="currentUser"
         class="mb-1"
@@ -70,7 +68,7 @@
 </template>
 
 <script>
-// Utilities
+  // Utilities
   import { mapGetters, mapState, mapActions } from 'vuex'
 
   export default {
@@ -104,7 +102,7 @@
       },
       profile () {
         return {
-          avatar: true,
+          avatar: require('@/assets/logo.jpg'),
           group: '',
           title: this.currentUser.name,
           children: [
@@ -203,12 +201,12 @@
       width: 20px
 
       +ltr()
-        margin-right: 24px
-        margin-left: 12px !important
+      margin-right: 24px
+      margin-left: 12px !important
 
       +rtl()
-        margin-left: 24px
-        margin-right: 12px !important
+      margin-left: 24px
+      margin-right: 12px !important
 
   .v-list--dense
     .v-list-item
@@ -219,17 +217,17 @@
   .v-list-group--sub-group
     .v-list-item
       +ltr()
-        padding-left: 8px
+      padding-left: 8px
 
       +rtl()
-        padding-right: 8px
+      padding-right: 8px
 
     .v-list-group__header
       +ltr()
-        padding-right: 0
+      padding-right: 0
 
       +rtl()
-        padding-right: 0
+      padding-right: 0
 
       .v-list-item__icon--text
         margin-top: 19px
@@ -239,8 +237,8 @@
         order: 2
 
         +ltr()
-          margin-right: 8px
+        margin-right: 8px
 
         +rtl()
-          margin-left: 8px
+        margin-left: 8px
 </style>
