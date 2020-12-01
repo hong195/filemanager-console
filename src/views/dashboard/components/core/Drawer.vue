@@ -133,7 +133,7 @@
           {
             icon: 'mdi-view-dashboard',
             title: 'Записи',
-            to: '/',
+            to: '/posts/list',
           },
           {
             group: '',
@@ -146,19 +146,19 @@
             group: 'category',
             icon: 'mdi-view-comfy',
             title: 'Категории',
-            to: '/category',
+            to: '/categories/list',
           },
           {
             group: '/users',
             icon: 'mdi-account-multiple',
             title: 'Пользователи',
-            to: '/users',
+            to: '/users/list',
             guarded: true,
           },
           {
             icon: 'mdi-account-multiple-plus',
             title: 'Добавить пользователя',
-            to: '/user/create',
+            to: '/users/create',
             guarded: true,
           },
         ].filter(item => {

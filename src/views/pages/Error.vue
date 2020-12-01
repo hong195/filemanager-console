@@ -8,7 +8,10 @@
       justify="center"
     >
       <v-col cols="auto">
-        <h1 class="title font-weight-black">
+        <h1
+          class="title font-weight-black"
+          style="font-size: 50px !important;"
+        >
           404
         </h1>
 

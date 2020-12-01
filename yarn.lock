@@ -2673,11 +2673,6 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
-chartist@^0.11.0:
-  version "0.11.4"
-  resolved "https://registry.yarnpkg.com/chartist/-/chartist-0.11.4.tgz#e96e1c573d8b67478920a3a6ae52359d9fc8d8b7"
-  integrity sha512-H4AimxaUD738/u9Mq8t27J4lh6STsLi4BQHt65nOtpLk3xyrBPaLiLMrHw7/WV9CmsjGA02WihjuL5qpSagLYw==
-
 check-more-types@2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/check-more-types/-/check-more-types-2.24.0.tgz#1420ffb10fd444dcfc79b43891bbfffd32a84600"
@@ -2726,11 +2721,6 @@ chownr@^1.0.1, chownr@^1.1.1:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.3.tgz#42d837d5239688d55f303003a508230fa6727142"
   integrity sha512-i70fVHhmV3DtTl6nqvZOnIjbY0Pe4kAUjwHj8z0zAdgBtYrJyYwLKCCuRBQ5ppkyL0AkN7HKRnETdmdp1zqNXw==
-
-chroma-js@^1.3.5:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.4.1.tgz#eb2d9c4d1ff24616be84b35119f4d26f8205f134"
-  integrity sha512-jTwQiT859RTFN/vIf7s+Vl/Z2LcMrvMv3WUFmd/4u76AdlFC0NTNgqEEFPcRiHmAswPsMiQEDZLM8vX8qXpZNQ==
 
 chrome-trace-event@^1.0.2:
   version "1.0.2"
@@ -5188,6 +5178,21 @@ filename-regex@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
   integrity sha1-wcS5vuPglyXdsQa3XB4wH+LxiyY=
+
+filepond-plugin-file-validate-type@^1.2.2:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-file-validate-type/-/filepond-plugin-file-validate-type-1.2.5.tgz#b3588088d2b0d5dbdf706d068c0ecdf28140a8e3"
+  integrity sha512-SsdYD6N+PDnetrPrBHfl13ZC9jRv5BuGdai5cORfANhuE/N32OwU/IclCNQ4qlpIa88hzqBg9dj6IINkiW+4HA==
+
+filepond-plugin-image-preview@^4.0.3:
+  version "4.6.4"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-preview/-/filepond-plugin-image-preview-4.6.4.tgz#19edade651559cf8c9fb97bcc8ce56af16ebae67"
+  integrity sha512-grlFJv1LH4E7IzsKTIFI52LuyLQa+lXMqmUnSm0cufDblRXHxdraRkjj/88bd9pyVJm206dBXQnlIVVyEaE5xg==
+
+filepond@^4.23.1:
+  version "4.23.1"
+  resolved "https://registry.yarnpkg.com/filepond/-/filepond-4.23.1.tgz#fb6b9f09732ca524586765aee040edd5c5d453d9"
+  integrity sha512-OHMiVucJXCC5SXZPlwbDm7lgH4hJKvlXjkKNH6fZWVoh3IAhdUDMKh18JJGpO9PC3cCl1UYi8Aa1Le96SyXHYg==
 
 fileset@^2.0.2:
   version "2.0.3"
@@ -11933,10 +11938,10 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vee-validate@^2.2.15:
-  version "2.2.15"
-  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-2.2.15.tgz#dc6c925d21e57288d3308fe5a39a0941036c575a"
-  integrity sha512-4TOsI8XwVkKVLkg8Nhmy+jyoJrR6XcTRDyxBarzcCvYzU61zamipS1WsB6FlDze8eJQpgglS4NXAS6o4NDPs1g==
+vee-validate@3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-3.3.0.tgz#9f426831cbf8394860b948b30a7bcc6d2b5d173b"
+  integrity sha512-+QQZgA0I9ZTDsYNOSFlUqOvGIqW4yxjloxQCC6TD0rPn407G9hifn6RnId8kzl6+zHfl3/dE+bko49mYzgNNGg==
 
 vendors@^1.0.0:
   version "1.0.3"
@@ -12064,13 +12069,6 @@ vue-axios@^2.1.5:
   resolved "https://registry.yarnpkg.com/vue-axios/-/vue-axios-2.1.5.tgz#1af4bf1218ed71309c76afb38d0f683e312c24a7"
   integrity sha512-th5xVbInVoyIoe+qY+9GCflEVezxAvztD4xpFF39SRQYqpoKD2qkmX8yv08jJG9a2SgNOCjirjJGSwg/wTrbmA==
 
-vue-chartist@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/vue-chartist/-/vue-chartist-2.2.1.tgz#c110f06c252467c5682634265abab543fb9c730f"
-  integrity sha512-JM7zQ9Y1PaRKF5sf82+bVuyL4qjDi+1eidOYbUlOHkzyQ3YhSUZGONDeO5ae+SISE6INvuL5js5hLOKxQMh+Vg==
-  dependencies:
-    chartist "^0.11.0"
-
 vue-cli-plugin-eslint-config-vuetify@latest:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/vue-cli-plugin-eslint-config-vuetify/-/vue-cli-plugin-eslint-config-vuetify-0.0.3.tgz#c8672fbd5d4cdaffa332cc4741b946e7245614ad"
@@ -12102,6 +12100,11 @@ vue-cli-plugin-vuetify@^1.1.0:
   dependencies:
     semver "^6.0.0"
     shelljs "^0.8.3"
+
+vue-cookies@^1.7.4:
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/vue-cookies/-/vue-cookies-1.7.4.tgz#d241d0a0431da0795837651d10b4d73e7c8d3e8d"
+  integrity sha512-mOS5Btr8V9zvAtkmQ7/TfqJIropOx7etDAgBywPCmHjvfJl2gFbH2XgoMghleLoyyMTi5eaJss0mPN7arMoslA==
 
 vue-doc-preview@^0.3.2:
   version "0.3.2"
@@ -12147,6 +12150,11 @@ vue-eslint-parser@^6.0.5:
     espree "^5.0.0"
     esquery "^1.0.1"
     lodash "^4.17.11"
+
+vue-filepond@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/vue-filepond/-/vue-filepond-6.0.3.tgz#199871e7d91f4d6a6c4ba5a4e653c6ce9cafbfa9"
+  integrity sha512-m0wArAdpgzOOs19bWA6zzYlHAb2aK+igPoKPZGrzpgKiiELPKW7XZ2OBDXzk7rhpFLkedujVrMqwjPyZfmQTTQ==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
@@ -12234,15 +12242,7 @@ vue-video-player@^5.0.2:
     videojs-flash "^2.1.0"
     videojs-hotkeys "^0.2.20"
 
-vue-world-map@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/vue-world-map/-/vue-world-map-0.1.1.tgz#7a1cba1b77abe67d09645cc4dd36d47a84c47a02"
-  integrity sha1-ehy6G3er5n0JZFzE3TbUeoTEegI=
-  dependencies:
-    chroma-js "^1.3.5"
-    vue "^2.5.2"
-
-vue@^2.5.16, vue@^2.5.2, vue@^2.6.10, vue@^2.6.4:
+vue@^2.5.16, vue@^2.6.10, vue@^2.6.4:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
   integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
@@ -12254,10 +12254,15 @@ vuetify-loader@^1.2.2:
   dependencies:
     loader-utils "^1.2.0"
 
-vuetify@^2.1.14, vuetify@^2.1.5:
+vuetify@^2.1.14:
   version "2.1.14"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.1.14.tgz#f53f5a9c8115c462eda47433d9a0136686802dd5"
   integrity sha512-DZ1Jq2+PPEXYeh08FGJktB6St0ClZlcwzveCvJmkW16pYkUnimFlW6E3AQxSqxRpcGfZDsE53XkvZ2BGhy+m8Q==
+
+vuetify@^2.1.5:
+  version "2.3.19"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.3.19.tgz#94ae6a8b0e2d52266b2a47c6a11021c63aa1b7b0"
+  integrity sha512-xqaiSEv0SUrzcoYU/N+orF7crRrhFkZt2ZPSDyPdHhiL6vMOFSYyz0OyGX3lAFykX/FJJMkNPgYTdg1l7WD1jA==
 
 vuex@^3.0.1:
   version "3.1.2"

@@ -1,4 +1,3 @@
-// import Vue from 'vue'
 export default {
   authFailed (state) {
     state.currentUser = null

@@ -42,79 +42,82 @@ const router = new Router({
         middleware: [auth],
         title: 'Главная',
       },
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: () => import('@/views/dashboard/Index'),
+      meta: {
+        middleware: [admin],
+        title: '',
+      },
       children: [
-        // Dashboard
         {
-          name: 'home',
-          path: '',
-          component: () => import('@/views/dashboard/Posts'),
-          meta: {
-            middleware: [auth],
-            title: 'Главная',
-          },
+          name: 'user_list',
+          path: 'list',
+          component: () => import('@/views/dashboard/users/Index'),
         },
         {
-          name: 'posts-list',
-          path: 'posts',
-          component: () => import('@/views/dashboard/Posts'),
-          meta: {
-            middleware: [auth],
-            title: 'Добавление записи',
-          },
+          name: 'create_user',
+          path: 'create',
+          component: () => import('@/views/dashboard/users/CreateUpdate'),
         },
         {
-          name: 'post_add',
-          path: 'posts/create',
-          component: () => import('@/views/dashboard/PostCreate'),
-          meta: {
-            middleware: [admin],
-            title: 'Добавление записи',
-          },
+          name: 'edit_user',
+          path: 'edit/:id',
+          component: () => import('@/views/dashboard/users/CreateUpdate'),
+        },
+      ],
+    },
+    {
+      path: '/posts',
+      name: 'posts',
+      component: () => import('@/views/dashboard/Index'),
+      meta: {
+        middleware: [admin],
+        title: '',
+      },
+      children: [
+        {
+          name: 'posts_list',
+          path: 'list',
+          component: () => import('@/views/dashboard/posts/Index'),
         },
         {
-          name: 'post_edit',
-          path: 'posts/edit',
-          component: () => import('@/views/dashboard/PostCreate'),
-          meta: {
-            middleware: [admin],
-            title: 'Редактировать записи',
-          },
+          name: 'create_post',
+          path: 'create',
+          component: () => import('@/views/dashboard/posts/CreateUpdate'),
         },
         {
-          name: 'user_create',
-          path: 'user/create',
-          component: () => import('@/views/dashboard/UserCreate'),
-          meta: {
-            middleware: [admin],
-            title: '',
-          },
+          name: 'edit_post',
+          path: 'edit/:id',
+          component: () => import('@/views/dashboard/posts/CreateUpdate'),
+        },
+      ],
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: () => import('@/views/dashboard/Index'),
+      meta: {
+        middleware: [admin],
+        title: '',
+      },
+      children: [
+        {
+          name: 'categories_list',
+          path: 'list',
+          component: () => import('@/views/dashboard/categories/Index'),
         },
         {
-          name: 'user_update',
-          path: 'user/:id',
-          component: () => import('@/views/dashboard/UserCreate'),
-          meta: {
-            middleware: [admin],
-            title: '',
-          },
+          name: 'categories_post',
+          path: 'create',
+          component: () => import('@/views/dashboard/categories/CreateUpdate'),
         },
         {
-          name: 'category-list',
-          path: 'category',
-          component: () => import('@/views/dashboard/Category'),
-          meta: {
-            middleware: [auth],
-            title: 'Список Категорий',
-          },
-        },
-        {
-          name: 'users',
-          path: 'users',
-          component: () => import('@/views/dashboard/Users'),
-          meta: {
-            middleware: [admin],
-            title: 'Пользователи',
-          },
+          name: 'categories_post',
+          path: 'edit/:id',
+          component: () => import('@/views/dashboard/categories/CreateUpdate'),
         },
       ],
     },
