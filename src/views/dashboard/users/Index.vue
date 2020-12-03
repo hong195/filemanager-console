@@ -4,7 +4,7 @@
     tag="section"
   >
     <base-v-component
-      heading="Список Пользователей"
+      :heading="$t('admin_panel.users.list')"
     />
 
     <base-material-card
@@ -15,7 +15,7 @@
     >
       <template v-slot:after-heading>
         <div class="display-2 font-weight-light">
-          Пользователи
+          {{ $t('admin_panel.users.plural') }}
         </div>
       </template>
 
@@ -24,7 +24,7 @@
         append-icon="mdi-magnify"
         class="ml-auto"
         hide-details
-        label="Поиск"
+        :label="$t('admin_panel.search')"
         single-line
         style="max-width: 250px;"
       />
@@ -37,7 +37,7 @@
         :search.sync="search"
         locale="ru"
         :loading="loading"
-        loading-text="Загрузка..."
+        :loading-text="$t('admin_panel.loading')"
         :calculate-widths="true"
       >
         <template v-slot:item.actions="{ item }">
@@ -64,17 +64,21 @@
   export default {
     name: 'Users',
     data: () => ({
-      headers: [
-        { text: 'Идентификатор', value: 'id' },
-        { text: 'Имя', value: 'name' },
-        { text: 'Электронная почта', value: 'email', class: 'email' },
-        { text: 'Дата регистрации', value: 'created_at', class: 'created_at' },
-        { sortable: false, text: 'Действия', value: 'actions', class: 'actions' },
-      ],
       items: [],
       search: undefined,
       loading: false,
     }),
+    computed: {
+      headers () {
+        return [
+          { text: this.$t('admin_panel.identifier'), value: 'id' },
+          { text: this.$t('admin_panel.users.name'), value: 'name' },
+          { text: this.$t('admin_panel.users.email'), value: 'email', class: 'email' },
+          { text: this.$t('admin_panel.registration_date'), value: 'created_at', class: 'created_at' },
+          { sortable: false, text: this.$t('admin_panel.actions'), value: 'actions', class: 'actions' },
+        ]
+      },
+    },
     created () {
       this.loading = true
       this.$http.get('users')

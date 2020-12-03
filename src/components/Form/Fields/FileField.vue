@@ -13,6 +13,7 @@
       allow-multiple="true"
       :files="files"
       :before-remove-file="update"
+      v-bind="attributes"
       @addfilestart="update"
       @init="handleFilePondInit"
     />

@@ -1,12 +1,6 @@
 import Vue from 'vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
-
-Vue.use(VueAxios, axios)
-
-axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT
 
 const requireComponent = require.context(
   '@/components/base', true, /\.vue$/

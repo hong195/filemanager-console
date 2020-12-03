@@ -3,9 +3,9 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import './plugins/base'
+import './plugins/axios'
 import './plugins/vee-validate'
 import './plugins/font-awesome'
-import './plugins/vue-file-agent'
 import vuetify from './plugins/vuetify'
 import i18n from './i18n'
 import VueVideoPlayer from 'vue-video-player'
@@ -20,16 +20,18 @@ Vue.config.productionTip = false
 
 function boot () {
   new Vue({
-    router,
+    created () {
+      store.dispatch('locale/fetchLanguages')
+    },
     store,
+    router,
     vuetify,
     i18n,
     render: h => h(App),
   }).$mount('#app')
 }
 
-// extract user before vue instance created
-store.dispatch('user/checkUser')
+store.dispatch('user/fetchUser')
   .then(() => {
     boot()
   })

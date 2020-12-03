@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
-import i18n from '@/i18n'
+import ru from 'vuetify/lib/locale/ru'
+import uz from '@/locales/vuetify/uz'
 
 Vue.use(Vuetify)
 
@@ -13,7 +14,8 @@ const theme = {
 
 export default new Vuetify({
   lang: {
-    t: (key, ...params) => i18n.t(key, params),
+    locales: { ru, uz },
+    current: localStorage.getItem('locale') || process.env.VUE_APP_I18N_LOCALE,
   },
   theme: {
     themes: {

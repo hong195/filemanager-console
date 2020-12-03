@@ -16,7 +16,6 @@ const router = new Router({
       component: () => import('@/views/pages/Index'),
       children: [
         {
-          name: 'lock',
           path: 'lock',
           component: () => import('@/views/pages/Lock'),
           meta: {
@@ -53,7 +52,7 @@ const router = new Router({
       },
       children: [
         {
-          name: 'user_list',
+          name: 'users_list',
           path: 'list',
           component: () => import('@/views/dashboard/users/Index'),
         },
@@ -78,6 +77,15 @@ const router = new Router({
         title: '',
       },
       children: [
+        {
+          name: 'home',
+          path: '/',
+          component: () => import('@/views/dashboard/posts/Index'),
+          meta: {
+            middleware: [auth],
+            title: 'Главная',
+          },
+        },
         {
           name: 'posts_list',
           path: 'list',

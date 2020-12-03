@@ -5,7 +5,7 @@
   >
     <default-form
       base-url="users"
-      next-route-name="posts"
+      next-route-name="users_list"
     />
   </v-container>
 </template>

@@ -4,8 +4,8 @@
     tag="section"
   >
     <base-v-component
-      heading="Список категорий"
-      sub-title="Список категорий"
+      :heading="$t('admin_panel.categories.list')"
+      :sub-title="$t('admin_panel.categories.list')"
     />
 
     <base-material-card
@@ -16,7 +16,7 @@
     >
       <template v-slot:after-heading>
         <div class="display-2 font-weight-light">
-          Категории
+          {{ $t('admin_panel.categories.list') }}
         </div>
       </template>
 
@@ -25,7 +25,7 @@
         append-icon="mdi-magnify"
         class="ml-auto"
         hide-details
-        label="Поиск"
+        :label="$t('admin_panel.search')"
         single-line
         style="max-width: 250px"
       />
@@ -37,7 +37,7 @@
         :search.sync="search"
         locale="ru"
         :loading="loading"
-        loading-text="Загрузка..."
+        :loading-text="$t('admin_panel.loading')"
         :calculate-widths="true"
       >
         <template v-slot:top>
@@ -133,43 +133,39 @@
       scope: 'category-form',
       requestType: 'post',
       currentItemId: '',
-      formFields: [
-        {
-          text: 'Название',
-          name: 'name',
-          type: 'text',
-          value: '',
-          rule: 'required',
-        },
-        {
-          text: 'Родительская категория',
-          name: 'parent_id',
-          type: 'tree',
-          value: null,
-          rule: '',
-          options: [],
-          disableBranchNodes: false,
-        },
-      ],
       items: [],
       search: undefined,
       loading: false,
     }),
     computed: {
       ...mapState('user', ['isAdmin']),
+      formFields () {
+        return [
+          {
+            text: this.$t('admin_panel.categories.name'),
+            name: 'name',
+            type: 'text',
+            value: '',
+            rule: 'required',
+          },
+          {
+            text: this.$t('admin_panel.categories.parent_cat'),
+            name: 'parent_id',
+            type: 'tree',
+            value: null,
+            rule: '',
+            options: [],
+            disableBranchNodes: false,
+          },
+        ]
+      },
       headers () {
         return [
-          { text: 'Идентификатор', value: 'id' },
-          { text: 'Наименование', value: 'name' },
-          { text: 'Количество записей', value: 'count', class: 'count' },
-          { text: 'Дата добавления', value: 'created_at', class: 'date' },
-          {
-            sortable: false,
-            text: 'Действия',
-            value: 'actions',
-            class: 'actions',
-            guarded: true,
-          },
+          { text: this.$t('admin_panel.identifier'), value: 'id' },
+          { text: this.$t('admin_panel.categories.name'), value: 'name' },
+          { text: this.$t('admin_panel.categories.count'), value: 'count', class: 'count' },
+          { text: this.$t('admin_panel.creation_date'), value: 'created_at', class: 'date' },
+          { sortable: false, text: this.$t('admin_panel.actions'), value: 'actions', class: 'actions', guarded: true },
         ].filter(header => {
           if (this.isAdmin) {
             return header

@@ -15,7 +15,7 @@
     >
       <template v-slot:after-heading>
         <div class="display-2 font-weight-light">
-          Файлы
+          {{ $t('admin_panel.attachments.list') }}
         </div>
       </template>
 
@@ -30,7 +30,7 @@
         <treeselect
           v-model="searchOptions.category"
           :options="categories"
-          placeholder="Категория"
+          :placeholder="$t('admin_panel.categories.plural')"
           no-options-text="Нет доступных значений"
           no-results-text="Нет доступных значений"
           no-children-text="Нет доступных значений"
@@ -40,17 +40,14 @@
         <treeselect
           v-model="searchOptions.mime_type"
           :options="allowedMimeTypes"
-          placeholder="Расширение Файла"
-          no-options-text="Нет доступных значений"
-          no-results-text="Нет доступных значений"
-          no-children-text="Нет доступных значений"
+          :placeholder="$t('admin_panel.attachments.file_extension')"
           style="margin: 20px 10px 0 0; max-width: 200px"
         />
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
           hide-details
-          label="Поиск"
+          :label="$t('admin_panel.search')"
           single-line
           style="max-width: 250px"
         />
@@ -64,7 +61,7 @@
         :search.sync="search"
         locale="ru"
         :loading="loading"
-        loading-text="Загрузка..."
+        :loading-text="$t('admin_panel.loading')"
         :calculate-widths="true"
         show-expand
         :single-expand="true"
@@ -106,9 +103,9 @@
             class="spnTooltip"
             :colspan="headers.length"
           >
-            <h3>Краткое описание</h3>
+            <h3>{{ $t('admin_panel.posts.short_description') }}</h3>
             <div>{{ item.excerpt }}</div>
-            <h3>Полное описание</h3>
+            <h3>{{ $t('admin_panel.posts.full_description') }}</h3>
             <div>{{ item.full_description }}</div>
           </td>
         </template>
@@ -184,15 +181,9 @@
       ...mapState('user', ['isAdmin']),
       headers () {
         return [
-          { text: 'Наименование', value: 'name' },
-          // { sortable: false, text: 'Краткое описание', value: 'excerpt' },
-          { text: 'Дата добавления', value: 'date', class: 'created_at' },
-          {
-            sortable: false,
-            text: 'Действия',
-            value: 'actions',
-            class: 'actions',
-          },
+          { text: this.$t('admin_panel.posts.name'), value: 'name' },
+          { text: this.$t('admin_panel.creation_date'), value: 'date', class: 'created_at' },
+          { sortable: false, text: this.$t('admin_panel.actions'), value: 'actions', class: 'actions' },
           { text: '', value: 'data-table-expand' },
         ]
       },
@@ -219,7 +210,7 @@
       },
       deleteItem (item) {
         this.$http
-          .delete(`post/${item.id}`)
+          .delete(`posts/${item.id}`)
           .then(() => {
             this.items.splice(
               this.items.findIndex(({ id }) => id === item.id),
@@ -238,7 +229,7 @@
         this.$refs.player.pause()
       },
       loadOptions () {
-        this.$http.get('category?with_children=1').then(({ data }) => {
+        this.$http.get('categories?with_children=1').then(({ data }) => {
           this.categories = []
           data.data.forEach(el => {
             const item = {
@@ -258,7 +249,7 @@
       searchFiles () {
         this.loading = true
         this.$http
-          .get('post', {
+          .get('posts', {
             params: {
               category_id: this.searchOptions.category,
               mime_type: this.searchOptions.mime_type,

@@ -5,7 +5,7 @@
   >
     <default-form
       base-url="posts"
-      next-route-name="posts"
+      next-route-name="posts_list"
     />
   </v-container>
 </template>

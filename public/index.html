@@ -1,23 +1,6 @@
-<!--
-
-=========================================================
-* Vuetify Material Dashboard PRO - v2.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/vuetify-material-dashboard-pro
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
--->
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -25,12 +8,21 @@
     <title>ЦЕНТР ЗНАНИЙ - OXYMed</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but material-pro doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+    <style>
+        /*preloader*/
+        .preloader {overflow: hidden;width: 100%;height: 100vh;}.preloader .spinner {width: 100%; height: 100%;display: flex !important; align-items: center; justify-content: center; background: #fff;z-index: 999; position: absolute;} .spinner {display: none;} .lds-ellipsis{display:inline-block;position:relative;width:80px;height:80px}.lds-ellipsis div{position:absolute;top:33px;width:13px;height:13px;border-radius:50%;background:#17fd3d;animation-timing-function:cubic-bezier(0,1,1,0)}.lds-ellipsis div:nth-child(1){left:8px;animation:lds-ellipsis1 .6s infinite}.lds-ellipsis div:nth-child(2){left:8px;animation:lds-ellipsis2 .6s infinite}.lds-ellipsis div:nth-child(3){left:32px;animation:lds-ellipsis2 .6s infinite}.lds-ellipsis div:nth-child(4){left:56px;animation:lds-ellipsis3 .6s infinite}@keyframes lds-ellipsis1{0%{transform:scale(0)}100%{transform:scale(1)}}@keyframes lds-ellipsis3{0%{transform:scale(1)}100%{transform:scale(0)}}@keyframes lds-ellipsis2{0%{transform:translate(0,0)}100%{transform:translate(24px,0)}}
+    </style>
+</head>
+<body class="preloader">
+<noscript>
+    <strong>К сожалению, админ панель не работает должным образом без включенного JavaScript. Пожалуйста, включите это, чтобы
+        продолжить.</strong>
+</noscript>
+<div class="spinner">
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+</div>
+<div id="app">
+</div>
+<!-- built files will be auto injected -->
+</body>
 </html>

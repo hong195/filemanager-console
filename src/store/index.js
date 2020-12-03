@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './user'
+import locale from './locale'
 
 Vue.use(Vuex)
 
@@ -20,8 +21,12 @@ export default new Vuex.Store({
     SET_SCRIM (state, payload) {
       state.barColor = payload
     },
+    removePreloader () {
+      document.querySelector('body').removeAttribute('class')
+    },
   },
   modules: {
     user: user,
+    locale: locale,
   },
 })

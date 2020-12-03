@@ -21,7 +21,7 @@
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="text-uppercase font-weight-regular display-2">
-          <span class="logo-normal">Центр Знаний</span>
+          <span class="logo-normal">{{ $t('admin_panel.title') }}</span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -53,9 +53,7 @@
           :key="`group-${i}`"
           :item="item"
           @logout="onLogout"
-        >
-          <!--  -->
-        </base-item-group>
+        />
 
         <base-item
           v-else
@@ -132,32 +130,32 @@
         return [
           {
             icon: 'mdi-view-dashboard',
-            title: 'Записи',
+            title: this.$t('admin_panel.posts.list'),
             to: '/posts/list',
           },
           {
             group: '',
             icon: 'mdi-application',
-            title: 'Добавление записи',
+            title: this.$t('admin_panel.posts.list'),
             to: '/posts/create',
             guarded: true,
           },
           {
             group: 'category',
             icon: 'mdi-view-comfy',
-            title: 'Категории',
+            title: this.$t('admin_panel.categories.plural'),
             to: '/categories/list',
           },
           {
             group: '/users',
             icon: 'mdi-account-multiple',
-            title: 'Пользователи',
+            title: this.$t('admin_panel.users.list'),
             to: '/users/list',
             guarded: true,
           },
           {
             icon: 'mdi-account-multiple-plus',
-            title: 'Добавить пользователя',
+            title: this.$t('admin_panel.users.add'),
             to: '/users/create',
             guarded: true,
           },
@@ -172,7 +170,7 @@
         return {
           ...item,
           children: item.children ? item.children.map(this.mapItem) : undefined,
-          title: this.$t(item.title),
+          title: item.title,
         }
       },
     },

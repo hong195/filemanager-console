@@ -9,6 +9,7 @@
       v-model="innerValue"
       :label="label"
       :error-messages="errors"
+      v-bind="attributes"
     />
   </validation-provider>
 </template>

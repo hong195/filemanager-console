@@ -22,4 +22,14 @@ export default {
       state.isAdmin = true
     }
   },
+  setUser (state, payload) {
+    state.currentUser = payload.user
+
+    if (payload.user.role && ['admin', 'Админ'].includes(payload.user.role.name)) {
+      state.isAdmin = true
+    }
+    // if (payload.user.permissions.length) {
+    //   state.permissions = payload.user.permissions
+    // }
+  },
 }
