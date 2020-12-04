@@ -91,7 +91,7 @@
     methods: {
       editItem (user) {
         this.$router.push({
-          name: 'user_update',
+          name: 'user_edit',
           params: { id: user.id },
         })
       },
@@ -100,12 +100,6 @@
           .then((data) => {
             this.items.splice(this.items.findIndex(({ id }) => id === item.id), 1)
           })
-      },
-      downloadItem (item) {
-        const popout = window.open(`${process.env.VUE_APP_API_ROOT_URL}/storage/${item.source}`)
-        window.setTimeout(() => {
-          popout.close()
-        })
       },
     },
   }

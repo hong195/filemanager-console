@@ -201,7 +201,7 @@
       editItem (item) {
         this.$router.push({
           name: 'post_edit',
-          query: { edit: true, id: item.id },
+          params: { id: item.id },
         })
       },
       view (item) {

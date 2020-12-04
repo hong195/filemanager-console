@@ -57,12 +57,12 @@ const router = new Router({
           component: () => import('@/views/dashboard/users/Index'),
         },
         {
-          name: 'create_user',
+          name: 'user_create',
           path: 'create',
           component: () => import('@/views/dashboard/users/CreateUpdate'),
         },
         {
-          name: 'edit_user',
+          name: 'user_edit',
           path: 'edit/:id',
           component: () => import('@/views/dashboard/users/CreateUpdate'),
         },
@@ -70,7 +70,6 @@ const router = new Router({
     },
     {
       path: '/posts',
-      name: 'posts',
       component: () => import('@/views/dashboard/Index'),
       meta: {
         middleware: [admin],
@@ -92,12 +91,12 @@ const router = new Router({
           component: () => import('@/views/dashboard/posts/Index'),
         },
         {
-          name: 'create_post',
+          name: 'post_create',
           path: 'create',
           component: () => import('@/views/dashboard/posts/CreateUpdate'),
         },
         {
-          name: 'edit_post',
+          name: 'post_edit',
           path: 'edit/:id',
           component: () => import('@/views/dashboard/posts/CreateUpdate'),
         },
@@ -118,12 +117,12 @@ const router = new Router({
           component: () => import('@/views/dashboard/categories/Index'),
         },
         {
-          name: 'categories_post',
+          name: 'category_create',
           path: 'create',
           component: () => import('@/views/dashboard/categories/CreateUpdate'),
         },
         {
-          name: 'categories_post',
+          name: 'category_edit',
           path: 'edit/:id',
           component: () => import('@/views/dashboard/categories/CreateUpdate'),
         },

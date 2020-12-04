@@ -106,7 +106,7 @@
             <v-icon
               small
               class="mr-2"
-              @click="setItem(item)"
+              @click="edit(item)"
             >
               mdi-pencil
             </v-icon>
@@ -215,41 +215,6 @@
             this.loading = false
           })
       },
-      add ($data) {
-        this.currentItemId = null
-        this.requestType = 'post'
-        this.$refs[this.scope].resetAll()
-
-        this.$http
-          .post('categories', $data)
-          .then(({ data }) => {
-            this.items.push(data.data)
-            this.dialog = false
-            this.fetchCategories()
-            this.loadOptions()
-            this.$refs[this.scope].setPreloader(false)
-            this.$refs[this.scope].resetAll()
-          })
-          .catch(error => {
-            this.$refs[this.scope].setPreloader(false)
-            console.error(error)
-          })
-      },
-      update ($data) {
-        this.$http
-          .put(`categories/${this.currentItemId}`, $data)
-          .then(() => {
-            this.fetchCategories()
-            this.loadOptions()
-            this.dialog = false
-            this.$refs[this.scope].resetAll()
-            this.requestType = 'post'
-          })
-          .catch(error => {
-            this.$refs[this.scope].setPreloader(false)
-            console.error(error)
-          })
-      },
       deleteItem (item) {
         this.$http
           .delete(`categories/${item.id}`)
@@ -264,24 +229,11 @@
             console.error(error)
           })
       },
-      setItem (item) {
-        this.dialog = true
-        const cat = this.formFields.find(el => {
-          return el.name === 'parent_id'
+      edit (item) {
+        this.$router.push({
+          name: 'category_edit',
+          params: { id: item.id },
         })
-
-        cat.options.forEach(el => {
-          el.isDisabled = el.id === item.id
-          el.children.forEach(el2 => {
-            el2.isDisabled = true
-          })
-        })
-
-        setTimeout(() => {
-          this.requestType = 'put'
-          this.currentItemId = item.id
-          this.$refs[this.scope].fillForm(item)
-        }, 200)
       },
     },
   }
