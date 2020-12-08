@@ -1,5 +1,5 @@
 <template>
-  <router-view />
+  <router-view :key="$i18n.locale" />
 </template>
 
 <script>

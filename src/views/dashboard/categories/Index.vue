@@ -59,7 +59,7 @@
                   v-bind="attrs"
                   v-on="on"
                 >
-                  Добавить
+                  {{ $t('admin_panel.add') }}
                 </v-btn>
               </template>
               <v-card>

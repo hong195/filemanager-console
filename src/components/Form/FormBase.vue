@@ -106,7 +106,7 @@
       buttonText () {
         let text
         if (this.method === 'post') {
-          text = 'Добавить'
+          text = this.$t('admin_panel.add')
         } else if (['put', 'patch'].includes(this.method)) {
           text = 'Обновить'
         }

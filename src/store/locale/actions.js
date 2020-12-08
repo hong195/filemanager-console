@@ -5,7 +5,8 @@ export default {
     return axios.get('locales')
       .then(({ data }) => {
         commit('setLanguages', data)
-        dispatch('fetchMessages')
+        // dispatch('fetchMessages')
+        commit('removePreloader', null, { root: true })
       })
   },
   fetchMessages ({ commit }) {

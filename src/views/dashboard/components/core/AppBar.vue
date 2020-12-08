@@ -27,15 +27,17 @@
     />
 
     <v-spacer />
+    <lang-switcher />
   </v-app-bar>
 </template>
 
 <script>
   import { mapMutations, mapState } from 'vuex'
+  import LangSwitcher from '@/components/LanguageSwitcher.'
 
   export default {
     name: 'DashboardCoreAppBar',
-
+    components: { LangSwitcher },
     props: {
       value: {
         type: Boolean,

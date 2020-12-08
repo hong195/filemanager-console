@@ -8,7 +8,7 @@
     "between": "{_field_} maydoni {min} va {max} orasida bo'lishi kerak",
     "confirmed": "{_field_} maydoni tasdiqlash mos kelmaydi",
     "digits": "{_field_} maydoni raqamli bo'lishi va to'liq {length} raqamidan iborat bo'lishi kerak",
-    "dimensions": "Поле {_field_} должно быть {width} пикселей на {height} пикселей",
+    "dimensions": "{_field_} maydoni eniga {width} piksel bo'yiga {height} piksel bo'lishi kerak",
     "email": "{_field_} maydoni haqiqiy elektron pochta manzili bo'lishi kerak",
     "excluded": "{_field_} maydoni haqiqiy qiymat bo'lishi kerak",
     "ext": "{_field_} maydoni haqiqiy fayl bo'lishi kerak. ({args})",

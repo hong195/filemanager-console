@@ -4,7 +4,7 @@
     tag="section"
   >
     <base-v-component
-      heading="Медиа файлы"
+      :heading="$t('admin_panel.attachments.list')"
       sub-title="Список медиа файлов"
     />
     <base-material-card
