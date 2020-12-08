@@ -13,28 +13,29 @@ import VueVideoPlayer from 'vue-video-player'
 // require videojs style
 import 'video.js/dist/video-js.css'
 import VueCookies from 'vue-cookies'
+import { mapMutations, mapActions } from 'vuex'
 
 Vue.use(VueCookies)
 Vue.use(VueVideoPlayer)
 Vue.config.productionTip = false
 
-function boot () {
-  new Vue({
-    created () {
-      store.dispatch('locale/fetchLanguages')
-    },
-    store,
-    router,
-    vuetify,
-    i18n,
-    render: h => h(App),
-  }).$mount('#app')
-}
-
-store.dispatch('user/fetchUser')
-  .then(() => {
-    boot()
-  })
-  .catch(() => {
-    boot()
-  })
+new Vue({
+  created () {
+    this.fetchUser()
+      .then(() => {
+        this.removePreloader()
+      })
+      .catch(() => {
+        this.removePreloader()
+      })
+  },
+  methods: {
+    ...mapMutations(['removePreloader']),
+    ...mapActions('user', ['fetchUser']),
+  },
+  store,
+  router,
+  vuetify,
+  i18n,
+  render: h => h(App),
+}).$mount('#app')

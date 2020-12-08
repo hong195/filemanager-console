@@ -37,8 +37,8 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
-  import axios from 'axios'
+  import { mapGetters } from 'vuex'
+  import { localize as localizeVeeValidate } from 'vee-validate'
   export default {
     name: 'LangSwitcher',
     data () {
@@ -54,7 +54,6 @@
     },
     computed: {
       ...mapGetters({ availableLocales: 'locale/getLanguages' }),
-      // ...mapActions('locale', ['fetchMessages']),
       currentLocale: {
         get () {
           if (this.availableLocales) {
@@ -63,10 +62,9 @@
           return 'ru'
         },
         set (code) {
-          this.$i18n.locale = code
           localStorage.setItem('locale', code)
-          axios.defaults.headers.common['Accept-Language'] = code
-          // this.fetchMessages()
+          this.$i18n.locale = code
+          localizeVeeValidate(code)
           this.open = false
         },
       },
