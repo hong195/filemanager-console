@@ -41,65 +41,15 @@
         :calculate-widths="true"
       >
         <template v-slot:top>
-          <v-toolbar
-            flat
-            color="white"
-            class="mt-5"
+          <v-btn
+            v-if="isAdmin"
+            color="primary"
+            dark
+            class="mb-2 mt-3"
+            @click="addCategory"
           >
-            <v-dialog
-              v-model="dialog"
-              max-width="500px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  v-if="isAdmin"
-                  color="primary"
-                  dark
-                  class="mb-2"
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  {{ $t('admin_panel.add') }}
-                </v-btn>
-              </template>
-              <v-card>
-                <v-card-title>
-                  <span class="headline">Добавить новую Категорию</span>
-                </v-card-title>
-                <base-form
-                  v-if="formFields.length"
-                  ref="category-form"
-                  :form-fields="formFields"
-                  :scope="scope"
-                  :form-request-type="requestType"
-                  @post-form-request="add"
-                  @put-form-request="update"
-                >
-                  <template v-slot:actions="{ formPreloader }">
-                    <v-card-actions>
-                      <v-spacer />
-
-                      <v-btn
-                        color="blue darken-1"
-                        text
-                        type="submit"
-                        :loading="formPreloader"
-                      >
-                        Сохранить
-                      </v-btn>
-                      <v-btn
-                        color="error"
-                        text
-                        @click="dialog = false"
-                      >
-                        Закрыть
-                      </v-btn>
-                    </v-card-actions>
-                  </template>
-                </base-form>
-              </v-card>
-            </v-dialog>
-          </v-toolbar>
+            {{ $t('admin_panel.add') }}
+          </v-btn>
         </template>
         <template v-slot:item.actions="{ item }">
           <div v-if="isAdmin">
@@ -139,26 +89,6 @@
     }),
     computed: {
       ...mapState('user', ['isAdmin']),
-      formFields () {
-        return [
-          {
-            text: this.$t('admin_panel.categories.name'),
-            name: 'name',
-            type: 'text',
-            value: '',
-            rule: 'required',
-          },
-          {
-            text: this.$t('admin_panel.categories.parent_cat'),
-            name: 'parent_id',
-            type: 'tree',
-            value: null,
-            rule: '',
-            options: [],
-            disableBranchNodes: false,
-          },
-        ]
-      },
       headers () {
         return [
           { text: this.$t('admin_panel.identifier'), value: 'id' },
@@ -176,30 +106,11 @@
     },
     created () {
       this.fetchCategories()
-      this.loadOptions()
     },
     methods: {
-      loadOptions () {
-        this.$http.get('categories?with_children=1').then(({ data }) => {
-          const item = this.formFields.find(el => {
-            return el.name === 'parent_id'
-          })
-          item.options = []
-          data.data.forEach(el => {
-            if (el.children) {
-              el.children = el.children.map(el2 => ({
-                id: el2.id,
-                label: el2.name,
-                isDisabled: true,
-              }))
-            }
-            item.options.push({
-              id: el.id,
-              label: el.name,
-              children: el.children || '',
-              isDisabled: false,
-            })
-          })
+      addCategory () {
+        this.$router.push({
+          name: 'category_create',
         })
       },
       fetchCategories () {
@@ -219,7 +130,6 @@
         this.$http
           .delete(`categories/${item.id}`)
           .then(() => {
-            this.loadOptions()
             this.items.splice(
               this.items.findIndex(({ id }) => id === item.id),
               1,

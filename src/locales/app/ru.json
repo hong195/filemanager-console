@@ -57,6 +57,11 @@
     "roles": {
       "admin": "Администратор",
       "subscriber": "Подписчик"
+    },
+    "languages" : {
+      "plural": "Языки",
+      "single": "Язык",
+      "select": "Выберите язык"
     }
   }
 }
