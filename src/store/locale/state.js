@@ -5,7 +5,7 @@ export default () => ({
       short_code: 'ru',
     },
     {
-      title: 'Узбекский',
+      title: 'O\'zbekcha',
       short_code: 'uz',
     },
   ],

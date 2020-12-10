@@ -38,6 +38,11 @@
         :search-options="searchFormValues"
         :should-update="updatePosts"
       >
+        <template v-slot:item.type="{item}">
+          <v-icon :color="getIcon(item.mime_type).color">
+            {{ getIcon(item.mime_type).icon }}
+          </v-icon>
+        </template>
         <template v-slot:item.actions="{ item }">
           <td>
             <font-awesome-icon
@@ -146,6 +151,7 @@
       ...mapState('user', ['isAdmin']),
       headers () {
         return [
+          { text: '', value: 'type' },
           { text: this.$t('admin_panel.posts.name'), value: 'name' },
           { text: this.$t('admin_panel.creation_date'), value: 'created_at', class: 'created_at' },
           { sortable: false, text: this.$t('admin_panel.actions'), value: 'actions', class: 'actions' },
@@ -160,6 +166,25 @@
         })
     },
     methods: {
+      getIcon (type) {
+        if (type) {
+          if (type.includes('video')) {
+            return { icon: 'mdi-video', color: 'black' }
+          }
+          if (type.includes('pdf')) {
+            return { icon: 'mdi-file-pdf-box', color: 'red' }
+          }
+          if (type.includes('presentation')) {
+            return { icon: 'mdi-presentation', color: 'orange' }
+          }
+          if (type.includes('.document') || type.includes('msword')) {
+            return { icon: 'mdi-file-word-box', color: 'blue' }
+          }
+          if (type.includes('spreadsheetml')) {
+            return { icon: 'mdi-file-excel-box', color: 'green' }
+          }
+        }
+      },
       editItem (item) {
         this.$router.push({
           name: 'post_edit',
