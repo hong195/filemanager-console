@@ -21,8 +21,9 @@
       </template>
 
       <v-text-field
-        v-model="search"
+        v-model="searchParams.query_search"
         append-icon="mdi-magnify"
+        outlined
         class="ml-auto"
         hide-details
         :label="$t('admin_panel.search')"
@@ -30,15 +31,11 @@
         style="max-width: 250px"
       />
 
-      <v-divider class="mt-3" />
-      <v-data-table
+      <data-table
+        fetch-url="categories"
         :headers="headers"
-        :items="items"
-        :search.sync="search"
-        locale="ru"
-        :loading="loading"
-        :loading-text="$t('admin_panel.loading')"
-        :calculate-widths="true"
+        :should-update="updateCategories"
+        :search-options="searchParams"
       >
         <template v-slot:top>
           <v-btn
@@ -50,6 +47,11 @@
           >
             {{ $t('admin_panel.add') }}
           </v-btn>
+        </template>
+        <template v-slot:item.count="{ item }">
+          <td class="text-start">
+            {{ item ? item.posts.length : 0 }}
+          </td>
         </template>
         <template v-slot:item.actions="{ item }">
           <div v-if="isAdmin">
@@ -68,24 +70,29 @@
             </v-icon>
           </div>
         </template>
-      </v-data-table>
+      </data-table>
     </base-material-card>
   </v-container>
 </template>
 
 <script>
   import { mapState } from 'vuex'
+  import DataTable from '../components/DataTable'
+
   export default {
     name: 'Category',
+    components: {
+      DataTable,
+    },
     data: () => ({
       options: [],
       dialog: false,
       scope: 'category-form',
-      requestType: 'post',
-      currentItemId: '',
-      items: [],
-      search: undefined,
-      loading: false,
+      updateCategories: false,
+      searchParams: {
+        query_search: '',
+        with_posts: true,
+      },
     }),
     computed: {
       ...mapState('user', ['isAdmin']),
@@ -104,36 +111,17 @@
         })
       },
     },
-    created () {
-      this.fetchCategories()
-    },
     methods: {
       addCategory () {
         this.$router.push({
           name: 'category_create',
         })
       },
-      fetchCategories () {
-        this.loading = true
-        this.$http
-          .get('categories')
-          .then(({ data }) => {
-            this.items = data.data
-            this.loading = false
-          })
-          .catch(error => {
-            console.error(error)
-            this.loading = false
-          })
-      },
       deleteItem (item) {
         this.$http
           .delete(`categories/${item.id}`)
           .then(() => {
-            this.items.splice(
-              this.items.findIndex(({ id }) => id === item.id),
-              1,
-            )
+            this.updateCategories = true
           })
           .catch(error => {
             console.error(error)

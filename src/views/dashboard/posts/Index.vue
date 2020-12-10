@@ -5,7 +5,6 @@
   >
     <base-v-component
       :heading="$t('admin_panel.attachments.list')"
-      sub-title="Список медиа файлов"
     />
     <base-material-card
       class="px-5 py-3"
@@ -19,53 +18,25 @@
         </div>
       </template>
 
-      <div
-        style="
-          display: flex;
-          flex-wrap: wrap;
-          margin-left: auto;
-          justify-content: flex-end;
-        "
+      <form-base
+        v-model="searchFormValues"
+        :schema="searchFormFields"
+        scope="post-search-form"
+        style="margin-left: auto"
+        class="post-search-form"
       >
-        <treeselect
-          v-model="searchOptions.category"
-          :options="categories"
-          :placeholder="$t('admin_panel.categories.plural')"
-          no-options-text="Нет доступных значений"
-          no-results-text="Нет доступных значений"
-          no-children-text="Нет доступных значений"
-          style="margin: 20px 10px 0 0; max-width: 350px"
-        />
-
-        <treeselect
-          v-model="searchOptions.mime_type"
-          :options="allowedMimeTypes"
-          :placeholder="$t('admin_panel.attachments.file_extension')"
-          style="margin: 20px 10px 0 0; max-width: 200px"
-        />
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          hide-details
-          :label="$t('admin_panel.search')"
-          single-line
-          style="max-width: 250px"
-        />
-      </div>
+        <template v-slot:actions>
+          <div />
+        </template>
+      </form-base>
 
       <v-divider class="mt-3" />
 
-      <v-data-table
+      <data-table
+        fetch-url="posts"
         :headers="headers"
-        :items="items"
-        :search.sync="search"
-        locale="ru"
-        :loading="loading"
-        :loading-text="$t('admin_panel.loading')"
-        :calculate-widths="true"
-        show-expand
-        :single-expand="true"
-        :expanded.sync="expanded"
+        :search-options="searchFormValues"
+        :should-update="updatePosts"
       >
         <template v-slot:item.actions="{ item }">
           <td>
@@ -77,7 +48,7 @@
             <v-icon
               small
               class="mr-2"
-              @click="downloadFile(item.file_id)"
+              @click="downloadFile(item.attachments[0].id)"
             >
               mdi mdi-arrow-collapse-down
             </v-icon>
@@ -98,7 +69,7 @@
             </v-icon>
           </td>
         </template>
-        <template v-slot:expanded-item="{ headers, item }">
+        <template v-slot:opened-item="{ headers, item }">
           <td
             class="spnTooltip"
             :colspan="headers.length"
@@ -109,15 +80,16 @@
             <div>{{ item.full_description }}</div>
           </td>
         </template>
-      </v-data-table>
+      </data-table>
     </base-material-card>
     <v-dialog
+      v-if="activeItem"
       v-model="dialog"
       :content-class="
-        isDocumentType(activeItem.file_name) ? 'full-width' : 'auto-width'
+        isDocumentType(activeItem.attachments[0].file_name) ? 'full-width' : 'auto-width'
       "
-      :width="isDocumentType(activeItem.file_name) ? '100%' : 'auto'"
-      :height="isDocumentType(activeItem.file_name) ? '100%' : '350px'"
+      :width="isDocumentType(activeItem.attachments[0].file_name) ? '100%' : 'auto'"
+      :height="isDocumentType(activeItem.attachments[0].file_name) ? '100%' : '350px'"
       @click:outside="onModalClose()"
     >
       <div>
@@ -132,14 +104,14 @@
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <div v-if="isVideoType(activeItem.file_name)">
+        <div v-if="isVideoType(activeItem.attachments[0].file_name)">
           <custom-video-player
             ref="player"
-            :url="activeItem.url"
+            :url="activeItem.attachments[0].url"
           />
         </div>
-        <div v-else-if="isDocumentType(activeItem.file_name)">
-          <document-previewer :url="activeItem.url" />
+        <div v-else-if="isDocumentType(activeItem.attachments[0].file_name)">
+          <document-previewer :url="activeItem.attachments[0].url" />
         </div>
       </div>
     </v-dialog>
@@ -151,51 +123,41 @@
   import CustomVideoPlayer from '@/components/VideoPlayer'
   import FileMixin from '@/mixins/FileMixin'
   import { mapState } from 'vuex'
-  import Treeselect from '@riophae/vue-treeselect'
-  import allowedMimeTypes from '@/utils/utils'
+  import FormBase from '@/components/Form/FormBase'
+  import DataTable from '../components/DataTable'
 
   export default {
     name: 'Posts',
     components: {
       CustomVideoPlayer,
       DocumentPreviewer,
-      Treeselect,
+      FormBase,
+      DataTable,
     },
     mixins: [FileMixin],
     data: () => ({
-      items: [],
       activeItem: '',
-      search: undefined,
-      loading: false,
       dialog: false,
-      categories: [],
-      allowedMimeTypes,
-      searchOptions: {
-        mime_type: null,
-        category: null,
-      },
-      expanded: [],
-      singleExpand: false,
+      searchFormValues: null,
+      searchFormFields: [],
+      updatePosts: false,
     }),
     computed: {
       ...mapState('user', ['isAdmin']),
       headers () {
         return [
           { text: this.$t('admin_panel.posts.name'), value: 'name' },
-          { text: this.$t('admin_panel.creation_date'), value: 'date', class: 'created_at' },
+          { text: this.$t('admin_panel.creation_date'), value: 'created_at', class: 'created_at' },
           { sortable: false, text: this.$t('admin_panel.actions'), value: 'actions', class: 'actions' },
-          { text: '', value: 'data-table-expand' },
+          { text: '', value: 'data-table-expand', sortable: false },
         ]
       },
     },
     created () {
-      this.loadOptions()
-    },
-    mounted () {
-      this.$watch('searchOptions', this.searchFiles, {
-        deep: true,
-        immediate: true,
-      })
+      this.$http.post('post-search-form')
+        .then(({ data }) => {
+          this.searchFormFields = data
+        })
     },
     methods: {
       editItem (item) {
@@ -209,13 +171,9 @@
         this.dialog = true
       },
       deleteItem (item) {
-        this.$http
-          .delete(`posts/${item.id}`)
+        this.$http.delete(`posts/${item.id}`)
           .then(() => {
-            this.items.splice(
-              this.items.findIndex(({ id }) => id === item.id),
-              1,
-            )
+            this.updatePosts = true
           })
           .catch(error => {
             console.error(error)
@@ -228,63 +186,16 @@
         }
         this.$refs.player.pause()
       },
-      loadOptions () {
-        this.$http.get('categories?with_children=1').then(({ data }) => {
-          this.categories = []
-          data.data.forEach(el => {
-            const item = {
-              id: el.id,
-              label: el.name,
-            }
-            if (el.children && el.children.length) {
-              item.children = el.children.map(el2 => ({
-                id: el2.id,
-                label: el2.name,
-              }))
-            }
-            this.categories.push(item)
-          })
-        })
-      },
-      searchFiles () {
-        this.loading = true
-        this.$http
-          .get('posts', {
-            params: {
-              category_id: this.searchOptions.category,
-              mime_type: this.searchOptions.mime_type,
-            },
-          })
-          .then(({ data }) => {
-            this.items = []
-            data.data.forEach(el => {
-              if (el.attachments) {
-                el.attachments.forEach(el2 => {
-                  this.items.push({
-                    id: el.id,
-                    name: el.name,
-                    file_id: el2.id,
-                    file_name: el2.file_name,
-                    excerpt: el.excerpt,
-                    full_description: el.full_description,
-                    mime_type: el2.mime_type,
-                    url: el2.url,
-                    date: el.created_at,
-                  })
-                })
-              }
-            })
-            this.loading = false
-          })
-          .catch(error => {
-            console.error(error)
-            this.loading = false
-          })
-      },
     },
   }
 </script>
 <style lang="scss">
+.post-search-form {
+  .row {
+    max-width: 800px;
+    margin-left: auto;
+  }
+}
 .close-btn {
   position: absolute;
   right: 10px;

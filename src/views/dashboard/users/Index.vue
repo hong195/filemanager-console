@@ -20,25 +20,22 @@
       </template>
 
       <v-text-field
-        v-model="search"
+        v-model="searchParams.query_search"
         append-icon="mdi-magnify"
         class="ml-auto"
         hide-details
         :label="$t('admin_panel.search')"
         single-line
+        outlined
         style="max-width: 250px;"
       />
 
       <v-divider class="mt-3" />
 
-      <v-data-table
+      <data-table
+        fetch-url="users"
         :headers="headers"
-        :items="items"
-        :search.sync="search"
-        locale="ru"
-        :loading="loading"
-        :loading-text="$t('admin_panel.loading')"
-        :calculate-widths="true"
+        :search-options="searchParams"
       >
         <template v-slot:item.actions="{ item }">
           <v-icon
@@ -55,17 +52,23 @@
             mdi-delete
           </v-icon>
         </template>
-      </v-data-table>
+      </data-table>
     </base-material-card>
   </v-container>
 </template>
 
 <script>
+  import DataTable from '../components/DataTable'
+
   export default {
     name: 'Users',
+    components: {
+      DataTable,
+    },
     data: () => ({
-      items: [],
-      search: undefined,
+      searchParams: {
+        query_search: '',
+      },
       loading: false,
     }),
     computed: {
@@ -78,15 +81,6 @@
           { sortable: false, text: this.$t('admin_panel.actions'), value: 'actions', class: 'actions' },
         ]
       },
-    },
-    created () {
-      this.loading = true
-      this.$http.get('users')
-        .then(({ data }) => {
-          this.items = data.data
-        })
-        .catch(error => console.error(error))
-      this.loading = false
     },
     methods: {
       editItem (user) {
