@@ -136,7 +136,7 @@
           {
             group: '',
             icon: 'mdi-application',
-            title: this.$t('admin_panel.posts.list'),
+            title: this.$t('admin_panel.posts.add'),
             to: '/posts/create',
             guarded: true,
           },

@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+import ru from 'vuetify/lib/locale/ru'
+import uz from '@/locales/vuetify/uz'
 
 Vue.use(VueI18n)
 
@@ -13,6 +15,10 @@ function loadLocaleMessages () {
       messages[locale] = locales(key)
     }
   })
+
+  messages.uz.$vuetify = uz
+  messages.ru.$vuetify = ru
+
   return messages
 }
 
