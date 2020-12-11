@@ -19,23 +19,27 @@ Vue.use(VueCookies)
 Vue.use(VueVideoPlayer)
 Vue.config.productionTip = false
 
-new Vue({
-  created () {
-    this.fetchUser()
-      .then(() => {
-        this.removePreloader()
-      })
-      .catch(() => {
-        this.removePreloader()
-      })
-  },
-  methods: {
-    ...mapMutations(['removePreloader']),
-    ...mapActions('user', ['fetchUser']),
-  },
-  store,
-  router,
-  vuetify,
-  i18n,
-  render: h => h(App),
-}).$mount('#app')
+function boot () {
+  new Vue({
+    created () {
+      this.removePreloader()
+    },
+    methods: {
+      ...mapMutations(['removePreloader']),
+      ...mapActions('user', ['fetchUser']),
+    },
+    store,
+    router,
+    vuetify,
+    i18n,
+    render: h => h(App),
+  }).$mount('#app')
+}
+
+store.dispatch('user/fetchUser')
+  .then(() => {
+    boot()
+  })
+  .catch(() => {
+    boot()
+  })

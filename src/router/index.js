@@ -46,10 +46,6 @@ const router = new Router({
       path: '/users',
       name: 'users',
       component: () => import('@/views/dashboard/Index'),
-      meta: {
-        middleware: [admin],
-        title: '',
-      },
       children: [
         {
           name: 'users_list',
@@ -60,11 +56,19 @@ const router = new Router({
           name: 'user_create',
           path: 'create',
           component: () => import('@/views/dashboard/users/CreateUpdate'),
+          meta: {
+            middleware: [admin],
+            title: '',
+          },
         },
         {
           name: 'user_edit',
           path: 'edit/:id',
           component: () => import('@/views/dashboard/users/CreateUpdate'),
+          meta: {
+            middleware: [admin],
+            title: '',
+          },
         },
       ],
     },
@@ -94,11 +98,19 @@ const router = new Router({
           name: 'post_create',
           path: 'create',
           component: () => import('@/views/dashboard/posts/CreateUpdate'),
+          meta: {
+            middleware: [admin],
+            title: '',
+          },
         },
         {
           name: 'post_edit',
           path: 'edit/:id',
           component: () => import('@/views/dashboard/posts/CreateUpdate'),
+          meta: {
+            middleware: [admin],
+            title: '',
+          },
         },
       ],
     },
