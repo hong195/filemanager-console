@@ -31,6 +31,15 @@
         style="max-width: 250px"
       />
 
+      <v-row class="mb-4">
+        <v-btn
+          color="primary"
+          @click="addCategory"
+        >
+          {{ $t('admin_panel.categories.add') }}
+        </v-btn>
+      </v-row>
+
       <data-table
         fetch-url="categories"
         :headers="headers"

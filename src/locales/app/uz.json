@@ -1,5 +1,6 @@
 {
   "admin_panel": {
+    "logout":  "Tashqariga chiqish",
     "home_page": "Bosh sahifa",
     "naming": "Ism",
     "block": "Bloklash",
@@ -39,6 +40,7 @@
     "posts": {
       "add": "Yozuv qo'shilmoqda",
       "update": "Yozuvni yangilash",
+      "unapproved_list":  "Tasdiqlanmagan fayllar ro'yxati",
       "list": "Yozuvlar ro'yxati",
       "name": "Ism",
       "short_description": "Qisqa Tasvir",

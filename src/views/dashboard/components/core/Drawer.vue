@@ -105,12 +105,17 @@
           title: this.currentUser.name,
           children: [
             {
-              to: undefined,
+              to: 'posts/unapproved/list',
+              name: 'unapproved_posts_list',
+              title: this.$t('admin_panel.posts.unapproved_list'),
+              callback: () => {},
+            },
+            {
+              to: 'login',
               name: 'logout',
-              title: 'Выйти',
+              title: this.$t('admin_panel.logout'),
               callback: () => {
                 this.logOut()
-                this.$router.push({ name: 'login' })
               },
             },
           ],

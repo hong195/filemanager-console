@@ -1,58 +1,66 @@
 <template>
-  <div>
-    <v-data-table
-      :items="items"
-      :headers="headers"
-      :loading="loading"
-      :loading-text="$t('admin_panel.loading')"
-      :calculate-widths="true"
-      :server-items-length="total"
-      @update:options="setOptions"
+  <v-data-table
+    :items="items"
+    :headers="headers"
+    :loading="loading"
+    :server-items-length="total"
+    @update:options="setOptions"
+  >
+    <template
+      v-slot:body="data"
     >
-      <template
-        v-slot:body="data"
-      >
-        <tbody>
-          <template
-            v-for="(item, index) in items"
-          >
-            <tr :key="`values-${index}`">
-              <td
-                v-for="(header,index2) in data.headers"
-                :key="`${header.value}-${index2}`"
-                :class="header.value === 'data-table-expand' ? 'text-right' : 'text-start'"
-              >
-                <slot
-                  v-if="header.value !== 'data-table-expand'"
-                  :name="`item.${header.value}`"
-                  :item="item"
-                >
-                  {{ item[header.value] }}
-                </slot>
-                <button
-                  v-if="header.value === 'data-table-expand'"
-                  type="button"
-                  :class="rowExpandedClass(item)"
-                  class="v-icon notranslate v-icon--link mdi mdi-chevron-down theme--light"
-                  @click="expandRow(item)"
-                />
-              </td>
-            </tr>
-            <tr
-              v-if="item.expanded"
-              :key="`expanded-${index}`"
+      <tbody v-if="items.length">
+        <template
+          v-for="(item, index) in items"
+        >
+          <tr :key="`values-${index}`">
+            <td
+              v-for="(header,index2) in data.headers"
+              :key="`${header.value}-${index2}`"
+              :class="header.value === 'data-table-expand' ? 'text-right' : 'text-start'"
             >
               <slot
-                name="opened-item"
+                v-if="header.value !== 'data-table-expand'"
+                :name="`item.${header.value}`"
                 :item="item"
-                :headers="data.headers"
+              >
+                {{ item[header.value] }}
+              </slot>
+              <button
+                v-if="header.value === 'data-table-expand'"
+                type="button"
+                :class="rowExpandedClass(item)"
+                class="v-icon notranslate v-icon--link mdi mdi-chevron-down theme--light"
+                @click="expandRow(item)"
               />
-            </tr>
-          </template>
-        </tbody>
-      </template>
-    </v-data-table>
-  </div>
+            </td>
+          </tr>
+          <tr
+            v-if="item.expanded"
+            :key="`expanded-${index}`"
+          >
+            <slot
+              name="opened-item"
+              :item="item"
+              :headers="data.headers"
+            />
+          </tr>
+        </template>
+      </tbody>
+      <tbody v-else>
+        <tr class="v-data-table__empty-wrapper">
+          <td :colspan="headers.length">
+            <template v-if="loading">
+              {{ $t('admin_panel.loading') }}
+            </template>
+            <template v-else>
+              {{ $t('$vuetify.noDataText') }}
+            </template>
+          </td>
+        </tr>
+      </tbody>
+    </template>
+  </v-data-table>
 </template>
 <script>
   export default {
@@ -107,7 +115,11 @@
     methods: {
       fetchPosts () {
         this.loading = true
-        const { page = 1, itemsPerPage = 10, sortBy = null } = this.options
+        const {
+          page = 1,
+          itemsPerPage = 10,
+          sortBy = null,
+        } = this.options
         this.$http.get(this.fetchUrl, {
           params: {
             ...this.searchOptions,
@@ -138,10 +150,14 @@
         return item.expanded ? 'v-data-table__expand-icon--active' : 'v-data-table__expand-icon'
       },
       expandRow (item) {
-        this.items.forEach(el => {
-          el.expanded = false
-        })
         item.expanded = !item.expanded
+        const itemIndex = this.items.indexOf(item)
+
+        this.items.forEach((el, index) => {
+          if (itemIndex !== index) {
+            el.expanded = false
+          }
+        })
       },
     },
   }

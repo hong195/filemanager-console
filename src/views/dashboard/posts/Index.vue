@@ -33,45 +33,33 @@
       <v-divider class="mt-3" />
 
       <data-table
-        fetch-url="posts"
+        ref="data-table"
+        :fetch-url="fetchUrl"
         :headers="headers"
         :search-options="searchFormValues"
-        :should-update="updatePosts"
       >
-        <template v-slot:item.type="{item}">
-          <v-icon :color="getIcon(item.mime_type).color">
-            {{ getIcon(item.mime_type).icon }}
+        <template
+          v-slot:item.type="{item}"
+        >
+          <v-icon
+            v-if="item.attachments && item.attachments.length"
+            :color="getIcon(item.attachments[0].mime_type).color"
+          >
+            {{ getIcon(item.attachments[0].mime_type).icon }}
           </v-icon>
         </template>
         <template v-slot:item.actions="{ item }">
           <td>
-            <font-awesome-icon
-              icon="eye"
-              class="mr-2"
-              @click.prevent="view(item)"
-            />
-            <v-icon
-              small
-              class="mr-2"
-              @click="downloadFile(item.attachments[0].id)"
-            >
-              mdi mdi-arrow-collapse-down
-            </v-icon>
-            <v-icon
-              v-if="isAdmin"
-              class="mr-2"
-              small
-              @click="editItem(item)"
-            >
-              mdi-pencil
-            </v-icon>
-            <v-icon
-              v-if="isAdmin"
-              small
-              @click="deleteItem(item)"
-            >
-              mdi-delete
-            </v-icon>
+            <template v-for="(action, index) in actions">
+              <v-icon
+                :key="`action-${index}`"
+                small
+                class="mr-2"
+                @click="callAction(action.handler, item)"
+              >
+                {{ action.icon }}
+              </v-icon>
+            </template>
           </td>
         </template>
         <template v-slot:opened-item="{ headers, item }">
@@ -141,11 +129,11 @@
     },
     mixins: [FileMixin],
     data: () => ({
+      fetchUrl: 'posts?status=published',
       activeItem: '',
       dialog: false,
       searchFormValues: null,
       searchFormFields: [],
-      updatePosts: false,
     }),
     computed: {
       ...mapState('user', ['isAdmin']),
@@ -156,6 +144,28 @@
           { text: this.$t('admin_panel.creation_date'), value: 'created_at', class: 'created_at' },
           { sortable: false, text: this.$t('admin_panel.actions'), value: 'actions', class: 'actions' },
           { text: '', value: 'data-table-expand', sortable: false },
+        ]
+      },
+      actions () {
+        return [
+          {
+            icon: 'mdi-eye',
+            handler: this.view,
+          },
+          {
+            icon: 'mdi-arrow-collapse-down',
+            handler: this.downloadFile,
+          },
+          {
+            icon: 'mdi-pencil',
+            handler: this.edit,
+            permission: 'edit_post',
+          },
+          {
+            icon: 'mdi-delete',
+            handler: this.deleteItem,
+            permission: 'delete_post',
+          },
         ]
       },
     },
@@ -191,6 +201,9 @@
           params: { id: item.id },
         })
       },
+      callAction (action, item) {
+        action(item)
+      },
       view (item) {
         this.activeItem = item
         this.dialog = true
@@ -198,7 +211,7 @@
       deleteItem (item) {
         this.$http.delete(`posts/${item.id}`)
           .then(() => {
-            this.updatePosts = true
+            this.$refs['data-table'].fetchPosts()
           })
           .catch(error => {
             console.error(error)

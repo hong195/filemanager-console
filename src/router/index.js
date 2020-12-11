@@ -39,7 +39,6 @@ const router = new Router({
       component: () => import('@/views/dashboard/Index'),
       meta: {
         middleware: [auth],
-        title: 'Главная',
       },
     },
     {
@@ -58,7 +57,6 @@ const router = new Router({
           component: () => import('@/views/dashboard/users/CreateUpdate'),
           meta: {
             middleware: [admin],
-            title: '',
           },
         },
         {
@@ -67,7 +65,6 @@ const router = new Router({
           component: () => import('@/views/dashboard/users/CreateUpdate'),
           meta: {
             middleware: [admin],
-            title: '',
           },
         },
       ],
@@ -76,8 +73,7 @@ const router = new Router({
       path: '/posts',
       component: () => import('@/views/dashboard/Index'),
       meta: {
-        middleware: [admin],
-        title: '',
+        middleware: [auth],
       },
       children: [
         {
@@ -86,13 +82,23 @@ const router = new Router({
           component: () => import('@/views/dashboard/posts/Index'),
           meta: {
             middleware: [auth],
-            title: 'Главная',
+          },
+        },
+        {
+          name: 'unapproved_posts_list',
+          path: 'unapproved/list',
+          component: () => import('@/views/dashboard/notApprovedPosts/Index'),
+          meta: {
+            middleware: [admin],
           },
         },
         {
           name: 'posts_list',
           path: 'list',
           component: () => import('@/views/dashboard/posts/Index'),
+          meta: {
+            middleware: [auth],
+          },
         },
         {
           name: 'post_create',
@@ -100,7 +106,6 @@ const router = new Router({
           component: () => import('@/views/dashboard/posts/CreateUpdate'),
           meta: {
             middleware: [admin],
-            title: '',
           },
         },
         {
@@ -109,7 +114,6 @@ const router = new Router({
           component: () => import('@/views/dashboard/posts/CreateUpdate'),
           meta: {
             middleware: [admin],
-            title: '',
           },
         },
       ],
@@ -120,7 +124,6 @@ const router = new Router({
       component: () => import('@/views/dashboard/Index'),
       meta: {
         middleware: [admin],
-        title: '',
       },
       children: [
         {
@@ -148,9 +151,6 @@ const router = new Router({
           name: '404',
           path: '',
           component: () => import('@/views/pages/Error'),
-          meta: {
-            title: 'Страница не найдена',
-          },
         },
       ],
     },
