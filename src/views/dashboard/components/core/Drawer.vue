@@ -85,7 +85,6 @@
 
     computed: {
       ...mapState(['barColor', 'barImage']),
-      ...mapState('user', ['isAdmin']),
       ...mapGetters('user', ['currentUser']),
       drawer: {
         get () {
@@ -108,17 +107,23 @@
               to: 'posts/unapproved/list',
               name: 'unapproved_posts_list',
               title: this.$t('admin_panel.posts.unapproved_list'),
+              permission: 'publish_posts',
               callback: () => {},
             },
             {
-              to: 'login',
+              to: 'page/login',
               name: 'logout',
               title: this.$t('admin_panel.logout'),
               callback: () => {
                 this.logOut()
               },
             },
-          ],
+          ].filter(item => {
+            if (!item.permission) {
+              return item
+            }
+            return this.currentUser.permissions.includes(item.permission)
+          }),
         }
       },
     },
@@ -137,38 +142,37 @@
             icon: 'mdi-view-dashboard',
             title: this.$t('admin_panel.posts.list'),
             to: '/posts/list',
+            permission: 'view_posts',
           },
           {
             group: '',
             icon: 'mdi-application',
             title: this.$t('admin_panel.posts.add'),
             to: '/posts/create',
-            guarded: true,
+            permission: 'create_posts',
           },
           {
             group: 'category',
             icon: 'mdi-view-comfy',
             title: this.$t('admin_panel.categories.plural'),
             to: '/categories/list',
+            permission: 'view_categories',
           },
           {
             group: '/users',
             icon: 'mdi-account-multiple',
             title: this.$t('admin_panel.users.list'),
             to: '/users/list',
-            guarded: true,
+            permission: 'view_users',
           },
           {
             icon: 'mdi-account-multiple-plus',
             title: this.$t('admin_panel.users.add'),
             to: '/users/create',
-            guarded: true,
+            permission: 'create_users',
           },
         ].filter(item => {
-          if (!this.isAdmin) {
-            return !item.guarded
-          }
-          return item
+          return this.currentUser.permissions.includes(item.permission)
         })
       },
       mapItem (item) {

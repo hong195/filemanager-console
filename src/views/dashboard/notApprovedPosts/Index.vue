@@ -12,25 +12,27 @@
           {
             icon: 'mdi-check-outline',
             handler: this.approve,
-            permission: 'can_publish',
+            permission: 'publish_posts',
           },
           {
             icon: 'mdi-eye',
             handler: this.view,
+            permission: 'view_posts',
           },
           {
             icon: 'mdi-arrow-collapse-down',
             handler: this.downloadFile,
+            permission: 'view_posts',
           },
           {
             icon: 'mdi-pencil',
             handler: this.edit,
-            permission: 'edit_post',
+            permission: 'edit_posts',
           },
           {
             icon: 'mdi-delete',
             handler: this.deleteItem,
-            permission: 'delete_post',
+            permission: 'delete_posts',
           },
         ]
       },

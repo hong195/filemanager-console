@@ -3,7 +3,7 @@
     name: 'FieldMixin',
     props: {
       value: {
-        type: [String, Number, Object, Array],
+        type: [String, Number, Object, Array, File],
         default: '',
         required: false,
       },

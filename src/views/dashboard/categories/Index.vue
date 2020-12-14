@@ -33,6 +33,7 @@
 
       <v-row class="mb-4">
         <v-btn
+          v-if="isAdmin"
           color="primary"
           @click="addCategory"
         >

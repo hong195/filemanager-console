@@ -52,6 +52,7 @@
           <td>
             <template v-for="(action, index) in actions">
               <v-icon
+                v-if="currentUser.permissions.includes(action.permission)"
                 :key="`action-${index}`"
                 small
                 class="mr-2"
@@ -136,7 +137,7 @@
       searchFormFields: [],
     }),
     computed: {
-      ...mapState('user', ['isAdmin']),
+      ...mapState('user', ['currentUser']),
       headers () {
         return [
           { text: '', value: 'type' },
@@ -151,20 +152,22 @@
           {
             icon: 'mdi-eye',
             handler: this.view,
+            permission: 'view_posts',
           },
           {
             icon: 'mdi-arrow-collapse-down',
             handler: this.downloadFile,
+            permission: 'view_posts',
           },
           {
             icon: 'mdi-pencil',
             handler: this.editItem,
-            permission: 'edit_post',
+            permission: 'edit_posts',
           },
           {
             icon: 'mdi-delete',
             handler: this.deleteItem,
-            permission: 'delete_post',
+            permission: 'delete_posts',
           },
         ]
       },

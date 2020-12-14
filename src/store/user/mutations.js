@@ -20,7 +20,7 @@ export default {
     state.isLoggedIn = true
     state.isActive = true
 
-    if (payload.user.role && ['admin', 'Админ'].includes(payload.user.role.name)) {
+    if (payload.user.role && ['admin', 'Админ', 'manager'].includes(payload.user.role.name)) {
       state.isAdmin = true
     }
   },
