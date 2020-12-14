@@ -18,8 +18,8 @@
       isVideoType (filename) {
         return this.videoTypes.includes(this.defineExtension(filename))
       },
-      downloadFile (fileId) {
-        window.open(`${process.env.VUE_APP_API_ROOT_URL}/download/${fileId}`)
+      downloadFile (item) {
+        window.open(`${process.env.VUE_APP_API_ROOT_URL}/download/${item.attachments[0].id}`)
       },
     },
   }

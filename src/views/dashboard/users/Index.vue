@@ -33,6 +33,7 @@
       <v-divider class="mt-3" />
 
       <data-table
+        ref="data-table"
         fetch-url="users"
         :headers="headers"
         :search-options="searchParams"
@@ -92,7 +93,7 @@
       deleteItem (item) {
         this.$http.delete(`users/${item.id}`)
           .then((data) => {
-            this.items.splice(this.items.findIndex(({ id }) => id === item.id), 1)
+            this.$refs['data-table'].fetchPosts()
           })
       },
     },

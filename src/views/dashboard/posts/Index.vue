@@ -158,7 +158,7 @@
           },
           {
             icon: 'mdi-pencil',
-            handler: this.edit,
+            handler: this.editItem,
             permission: 'edit_post',
           },
           {

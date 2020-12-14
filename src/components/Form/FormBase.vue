@@ -61,6 +61,7 @@
   import FileField from './Fields/FileField'
   import DateField from './Fields/DateField'
   import FormActionMixin from '@/components/Form/Mixins/FormActionsMixin'
+  import { serialize } from 'object-to-formdata'
 
   export default {
     name: 'FormBase',
@@ -118,7 +119,8 @@
           const name = field.name.split('.')
           this.assign(values, name, field.value)
         })
-        return values
+
+        return serialize(values)
       },
     },
     created () {
