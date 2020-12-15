@@ -18,6 +18,7 @@
 </template>
 <script>
   import FormBase from './FormBase'
+  import { serialize } from 'object-to-formdata'
 
   export default {
     name: 'DefaultForm',
@@ -36,6 +37,10 @@
       titleUpdate: {
         type: String,
         default: '',
+      },
+      serializeValues: {
+        type: Boolean,
+        default: false,
       },
       nextRouteName: {
         type: String,
@@ -77,7 +82,8 @@
           })
       },
       createOrUpdate ({ resolve }) {
-        this.axios[this.method](this.endPointUrl, this.formValue)
+        const formValues = this.serializeValues ? serialize(this.formValue) : this.formValue
+        this.axios[this.method](this.endPointUrl, formValues)
           .then(({ data }) => {
             this.$store.commit('successMessage', data.message)
 

@@ -21,6 +21,7 @@
       <form-base
         v-model="searchFormValues"
         :schema="searchFormFields"
+        :serialize-values="false"
         scope="post-search-form"
         style="margin-left: auto"
         class="post-search-form"

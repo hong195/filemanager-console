@@ -79,7 +79,7 @@
         default: () => ([]),
       },
       searchOptions: {
-        type: Object,
+        type: [Object, FormData],
         default: () => ({}),
       },
     },

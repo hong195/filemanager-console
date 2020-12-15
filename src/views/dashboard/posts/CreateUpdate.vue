@@ -6,6 +6,7 @@
     <default-form
       base-url="posts"
       next-route-name="posts_list"
+      :serialize-values="true"
     />
   </v-container>
 </template>
