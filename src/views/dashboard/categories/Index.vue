@@ -42,9 +42,9 @@
       </v-row>
 
       <data-table
+        ref="data-table"
         fetch-url="categories"
         :headers="headers"
-        :should-update="updateCategories"
         :search-options="searchParams"
       >
         <template v-slot:top>
@@ -108,9 +108,8 @@
       ...mapState('user', ['isAdmin']),
       headers () {
         return [
-          { text: this.$t('admin_panel.identifier'), value: 'id' },
           { text: this.$t('admin_panel.categories.name'), value: 'name' },
-          { text: this.$t('admin_panel.categories.count'), value: 'count', class: 'count' },
+          { text: this.$t('admin_panel.categories.count'), value: 'count', class: 'count', sortable: false },
           { text: this.$t('admin_panel.creation_date'), value: 'created_at', class: 'date' },
           { sortable: false, text: this.$t('admin_panel.actions'), value: 'actions', class: 'actions', guarded: true },
         ].filter(header => {
@@ -131,7 +130,7 @@
         this.$http
           .delete(`categories/${item.id}`)
           .then(() => {
-            this.updateCategories = true
+            this.$refs['data-table'].fetchPosts()
           })
           .catch(error => {
             console.error(error)

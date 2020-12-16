@@ -1,7 +1,5 @@
 <template>
-  <v-app>
-    <pages-core-view />
-  </v-app>
+  <pages-core-view />
 </template>
 
 <script>

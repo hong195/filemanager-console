@@ -82,8 +82,13 @@
           })
       },
       createOrUpdate ({ resolve }) {
-        const formValues = this.serializeValues ? serialize(this.formValue) : this.formValue
-        this.axios[this.method](this.endPointUrl, formValues)
+        this.formValue._method = this.method
+        const formValues = serialize(this.formValue)
+        this.axios.request({
+          method: 'post',
+          url: this.endPointUrl,
+          data: formValues,
+        })
           .then(({ data }) => {
             this.$store.commit('successMessage', data.message)
 

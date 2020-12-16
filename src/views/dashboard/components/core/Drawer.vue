@@ -42,7 +42,6 @@
         class="mb-2"
       />
     </div>
-
     <v-list
       expand
       nav
@@ -52,7 +51,6 @@
           v-if="item.children"
           :key="`group-${i}`"
           :item="item"
-          @logout="onLogout"
         />
 
         <base-item
@@ -66,23 +64,16 @@
 </template>
 
 <script>
-  // Utilities
   import { mapGetters, mapState, mapActions } from 'vuex'
 
   export default {
     name: 'DashboardCoreDrawer',
-
     props: {
       expandOnHover: {
         type: Boolean,
         default: false,
       },
     },
-
-    data: () => ({
-      items: [],
-    }),
-
     computed: {
       ...mapState(['barColor', 'barImage']),
       ...mapGetters('user', ['currentUser']),
@@ -118,11 +109,11 @@
                 this.logOut()
               },
             },
-          ].filter(item => {
-            if (!item.permission) {
-              return item
+          ].filter(el => {
+            if (!el.permission) {
+              return el
             }
-            return this.currentUser.permissions.includes(item.permission)
+            return this.currentUser.permissions.includes(el.permission)
           }),
         }
       },
@@ -139,48 +130,76 @@
       setItems () {
         return [
           {
+            group: '/posts',
             icon: 'mdi-view-dashboard',
-            title: this.$t('admin_panel.posts.list'),
-            to: '/posts/list',
+            title: this.$t('admin_panel.posts.plural'),
             permission: 'view_posts',
+            children: [
+              {
+                icon: 'mdi-application',
+                title: this.$t('admin_panel.posts.list'),
+                to: 'list',
+                permission: 'view_posts',
+              },
+              {
+                icon: 'mdi-application',
+                title: this.$t('admin_panel.posts.add'),
+                to: 'create',
+                permission: 'create_posts',
+              },
+            ],
           },
           {
-            group: '',
-            icon: 'mdi-application',
-            title: this.$t('admin_panel.posts.add'),
-            to: '/posts/create',
-            permission: 'create_posts',
-          },
-          {
-            group: 'category',
+            group: '/categories',
             icon: 'mdi-view-comfy',
             title: this.$t('admin_panel.categories.plural'),
-            to: '/categories/list',
             permission: 'view_categories',
+            children: [
+              {
+                icon: 'mdi-application',
+                title: this.$t('admin_panel.categories.list'),
+                to: 'list',
+                permission: 'view_categories',
+              },
+              {
+                icon: 'mdi-application',
+                title: this.$t('admin_panel.categories.add'),
+                to: 'create',
+                permission: 'create_categories',
+              },
+            ],
           },
           {
             group: '/users',
             icon: 'mdi-account-multiple',
             title: this.$t('admin_panel.users.list'),
-            to: '/users/list',
             permission: 'view_users',
+            children: [
+              {
+                icon: 'mdi-account-multiple-plus',
+                title: this.$t('admin_panel.users.plural'),
+                to: 'list',
+                permission: 'view_users',
+              },
+              {
+                icon: 'mdi-account-multiple-plus',
+                title: this.$t('admin_panel.users.add'),
+                to: 'create',
+                permission: 'create_users',
+              },
+            ],
           },
-          {
-            icon: 'mdi-account-multiple-plus',
-            title: this.$t('admin_panel.users.add'),
-            to: '/users/create',
-            permission: 'create_users',
-          },
-        ].filter(item => {
-          return this.currentUser.permissions.includes(item.permission)
-        })
+        ]
       },
       mapItem (item) {
-        return {
-          ...item,
-          children: item.children ? item.children.map(this.mapItem) : undefined,
-          title: item.title,
+        if (!item.permission.length || this.currentUser.permissions.includes(item.permission)) {
+          return {
+            ...item,
+            children: item.children ? item.children.map(this.mapItem) : undefined,
+            title: item.title,
+          }
         }
+        return {}
       },
     },
   }

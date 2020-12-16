@@ -1,5 +1,8 @@
 <template>
-  <router-view :key="$i18n.locale" />
+  <v-app :key="$i18n.locale">
+    <router-view />
+    <base-snackbar-message />
+  </v-app>
 </template>
 
 <script>

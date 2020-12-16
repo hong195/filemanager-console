@@ -45,6 +45,9 @@ const router = new Router({
       path: '/users',
       name: 'users',
       component: () => import('@/views/dashboard/Index'),
+      meta: {
+        middleware: [admin],
+      },
       children: [
         {
           name: 'users_list',

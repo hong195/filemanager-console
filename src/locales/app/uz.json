@@ -1,8 +1,8 @@
 {
   "admin_panel": {
-    "logout":  "Tashqariga chiqish",
+    "logout":  "Chiqish",
     "home_page": "Bosh sahifa",
-    "naming": "Ism",
+    "naming": "Nomi",
     "block": "Bloklash",
     "title": "Bilimlar markazi",
     "authorization": "Avtorizatsiya",
@@ -28,22 +28,22 @@
       "list": "Foydalanuvchilar ro'yxati"
     },
     "categories": {
-      "add": "Toifalar qo'shilmoqda",
+      "add": "Toifa qo'shish",
       "update": "Toifalar yangilanmoqda",
-      "name": "Ism",
-      "parent_cat": "Ota-onalar toifasi",
-      "single": "Turkum",
-      "plural": "Kategoriyalar",
-      "list": "Kategoriyalar ro'yxati",
+      "name": "Nomi",
+      "parent_cat": "Katta toifa",
+      "single": "Toifa",
+      "plural": "Toifalar",
+      "list": "Toifalar ro'yxati",
       "count": "Yozuvlar soni"
     },
     "posts": {
-      "add": "Yozuv qo'shilmoqda",
+      "add": "Yozuv qo'shish",
       "update": "Yozuvni yangilash",
       "unapproved_list":  "Tasdiqlanmagan fayllar ro'yxati",
       "list": "Yozuvlar ro'yxati",
-      "name": "Ism",
-      "short_description": "Qisqa Tasvir",
+      "name": "Nomi",
+      "short_description": "Qisqa tavsif",
       "full_description": "To'liq tavsif",
       "count": "Yozuvlar soni",
       "single": "Yozib olish",

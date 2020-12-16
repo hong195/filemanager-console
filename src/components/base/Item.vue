@@ -1,5 +1,6 @@
 <template>
   <v-list-item
+    v-if="Object.values(item).length > 1"
     :href="href"
     :rel="href && href !== '#' ? 'noopener' : undefined"
     :target="href && href !== '#' ? '_blank' : undefined"
@@ -35,7 +36,7 @@
 
     props: {
       item: {
-        type: Object,
+        type: [Object],
         default: () => ({
           href: undefined,
           icon: undefined,
