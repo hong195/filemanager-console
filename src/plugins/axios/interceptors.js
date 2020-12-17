@@ -18,6 +18,10 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use((response) => {
   return response
 }, (error) => {
+  if (error.response.status === 404) {
+    router.push({ name: '404' })
+  }
+
   if (error.response.status !== 401) {
     return new Promise((resolve, reject) => {
       reject(error)

@@ -15,7 +15,6 @@ import 'video.js/dist/video-js.css'
 import VueCookies from 'vue-cookies'
 import { mapMutations, mapActions } from 'vuex'
 
-
 Vue.use(VueCookies)
 Vue.use(VueVideoPlayer)
 Vue.config.productionTip = false

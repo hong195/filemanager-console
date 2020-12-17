@@ -92,6 +92,10 @@
         type: String,
         required: true,
       },
+      loading: {
+        type: Boolean,
+        default: false,
+      },
       currentItem: {
         type: Object,
         default: () => {
@@ -99,9 +103,6 @@
         },
       },
     },
-    data: () => ({
-      loading: false,
-    }),
     computed: {
       buttonText () {
         let text

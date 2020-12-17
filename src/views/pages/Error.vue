@@ -16,14 +16,14 @@
         </h1>
 
         <div class="display-3 mb-5 mt-10">
-          Page not found :(
+          {{ $t('admin_panel.404') }}
         </div>
 
         <v-btn
           depressed
-          to="/"
+          to="posts/list"
         >
-          Get me out of here!
+          {{ $t('admin_panel.to_home_page') }}
         </v-btn>
       </v-col>
     </v-row>

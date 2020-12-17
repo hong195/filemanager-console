@@ -12,6 +12,18 @@
     >
       {{ message }}
     </base-material-alert>
+    <template v-slot:action="{ attrs }">
+      <v-btn
+        color="white"
+        text
+        v-bind="attrs"
+        @click="snackBar = false"
+      >
+        <v-icon>
+          mdi-close
+        </v-icon>
+      </v-btn>
+    </template>
   </v-snackbar>
 </template>
 <script>
@@ -41,8 +53,15 @@
       },
     },
     watch: {
-      message () {
-        this.snackBar = true
+      message (val) {
+        if (val) {
+          this.snackBar = true
+        }
+      },
+      snackBar (val) {
+        if (!val) {
+          this.message = ''
+        }
       },
     },
     methods: {
@@ -52,3 +71,8 @@
     },
   }
 </script>
+<style>
+.v-snack__content .v-alert .v-btn i {
+  display: none;
+}
+</style>

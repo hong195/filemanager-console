@@ -172,12 +172,12 @@
           {
             group: '/users',
             icon: 'mdi-account-multiple',
-            title: this.$t('admin_panel.users.list'),
+            title: this.$t('admin_panel.users.plural'),
             permission: 'view_users',
             children: [
               {
                 icon: 'mdi-account-multiple-plus',
-                title: this.$t('admin_panel.users.plural'),
+                title: this.$t('admin_panel.users.list'),
                 to: 'list',
                 permission: 'view_users',
               },

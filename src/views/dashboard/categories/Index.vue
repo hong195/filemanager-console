@@ -33,7 +33,7 @@
 
       <v-row class="mb-4">
         <v-btn
-          v-if="isAdmin"
+          v-if="currentUser.permissions.includes('create_categories')"
           color="primary"
           @click="addCategory"
         >
@@ -106,17 +106,25 @@
     }),
     computed: {
       ...mapState('user', ['isAdmin']),
+      ...mapState('user', ['currentUser']),
       headers () {
         return [
           { text: this.$t('admin_panel.categories.name'), value: 'name' },
           { text: this.$t('admin_panel.categories.count'), value: 'count', class: 'count', sortable: false },
           { text: this.$t('admin_panel.creation_date'), value: 'created_at', class: 'date' },
-          { sortable: false, text: this.$t('admin_panel.actions'), value: 'actions', class: 'actions', guarded: true },
+          {
+            sortable: false,
+            text: this.$t('admin_panel.actions'),
+            value: 'actions',
+            class: 'actions',
+            guarded: true,
+            permission: 'edit_categories',
+          },
         ].filter(header => {
-          if (this.isAdmin) {
+          if (!header.permission) {
             return header
           }
-          return !header.guarded
+          return this.currentUser.permissions.includes(header.permission)
         })
       },
     },

@@ -13,6 +13,7 @@
       :method="method"
       :on-submit="createOrUpdate"
       :on-update="createOrUpdate"
+      :loading="loading"
     />
   </base-material-card>
 </template>
@@ -50,6 +51,7 @@
     data: () => ({
       formValue: null,
       schema: [],
+      loading: false,
     }),
     computed: {
       isUpdate () {
@@ -82,6 +84,7 @@
           })
       },
       createOrUpdate ({ resolve }) {
+        this.loading = true
         this.formValue._method = this.method
         const formValues = serialize(this.formValue)
         this.axios.request({
@@ -90,6 +93,7 @@
           data: formValues,
         })
           .then(({ data }) => {
+            this.loading = false
             this.$store.commit('successMessage', data.message)
 
             if (this.nextRouteName) {
@@ -97,11 +101,11 @@
             }
           })
           .catch((error) => {
+            this.loading = false
             const { response } = error
             this.$store.commit('errorMessage', response.data.message)
             console.error(error)
           })
-        resolve()
       },
     },
   }

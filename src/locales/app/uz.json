@@ -1,5 +1,8 @@
 {
   "admin_panel": {
+    "login": "Kirish",
+    "to_home_page": "Bosh sahifaga",
+    "404": "Sahifa topilmadi",
     "logout":  "Chiqish",
     "home_page": "Bosh sahifa",
     "naming": "Nomi",
@@ -25,7 +28,8 @@
       "password": "Parol",
       "single": "Foydalanuvchi",
       "plural": "Foydalanuvchilar",
-      "list": "Foydalanuvchilar ro'yxati"
+      "list": "Foydalanuvchilar ro'yxati",
+      "remember_me": "Meni eslab qolish"
     },
     "categories": {
       "add": "Toifa qo'shish",
@@ -63,6 +67,15 @@
       "plural": "Tillar",
       "single": "Till",
       "select": "Tilni tanlang"
+    },
+    "validation": {
+      "email": {
+        "valid": "Elektron pochta haqiqiy bo'lishi kerak",
+        "required": "Elektron pochta maydoni kerak"
+      },
+      "password": {
+        "required": "Parol maydoni kerak"
+      }
     }
   }
 }

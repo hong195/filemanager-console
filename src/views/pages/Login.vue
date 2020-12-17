@@ -8,6 +8,7 @@
       justify="center"
       align="center"
     >
+      <!--      Todo refactor into form base-->
       <v-slide-y-transition appear>
         <base-material-card
           background-color="#fff"
@@ -28,20 +29,20 @@
               id="email"
               v-model="email"
               :rules="emailRules"
-              label="Электронная почта"
+              :label="$t('admin_panel.users.email')"
             />
             <v-text-field
               id="password"
               v-model="password"
               :type="showPassword ? 'text' : 'password'"
               :rules="passwordRules"
-              label="Пароль"
+              :label="$t('admin_panel.users.password')"
               :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
               @click:append="() => (showPassword = !showPassword)"
             />
             <v-checkbox
               v-model="rememberMe"
-              label="Запомнить меня"
+              :label="$t('admin_panel.users.remember_me')"
             />
             <v-card-actions>
               <v-spacer />
@@ -52,7 +53,7 @@
                 type="submit"
                 x-large
               >
-                Войти
+                {{ $t('admin_panel.login') }}
               </v-btn>
               <v-spacer />
             </v-card-actions>
@@ -82,13 +83,6 @@
         password: this.$cookies.get('password'),
         showPassword: false,
         rememberMe: false,
-        emailRules: [
-          v => !!v || 'Пожалуйста, введите значение',
-          v =>
-            /.+@.+\..+/.test(v || 'name@mail.uz') ||
-            'E-mail должен быть действительным',
-        ],
-        passwordRules: [v => !!v || 'Пожалуйста, введите значение'],
         scope: 'login-form',
         loading: false,
         message: '',
@@ -98,6 +92,17 @@
     computed: {
       color () {
         return this.error ? 'error' : 'success'
+      },
+      emailRules () {
+        return [
+          v => !!v || this.$t('admin_panel.validation.email.required'),
+          v =>
+            /.+@.+\..+/.test(v || 'name@mail.uz') ||
+            this.$t('admin_panel.validation.email.valid'),
+        ]
+      },
+      passwordRules () {
+        return [v => !!v || this.$t('admin_panel.validation.password.required')]
       },
     },
     methods: {
