@@ -13,6 +13,7 @@
           small
           class="close"
           color="white"
+          @click="deleteFile(key)"
         >
           mdi-close
         </v-icon>
@@ -112,7 +113,12 @@
           if (type.includes('spreadsheetml')) {
             return { icon: 'mdi-file-excel-box', color: '#30723f' }
           }
+        } else {
+          return { icon: '', color: 'white' }
         }
+      },
+      deleteFile (key) {
+        this.files.splice(key, 1)
       },
     },
   }
@@ -134,16 +140,14 @@
   cursor: pointer;
 }
 .files{
-  display: inline-grid;
+  display: flex;
   grid-auto-flow: column;
   grid-gap: 10px;
   list-style: none;
   padding: 0;
-  max-width: 100%;
-  overflow-x: auto;
   margin-bottom: 10px;
+  flex-wrap: wrap;
   &__single {
-    flex: 1 0 auto;
     width: 150px;
     min-height: 150px;
     position: relative;
