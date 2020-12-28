@@ -39,10 +39,6 @@
         type: String,
         default: '',
       },
-      serializeValues: {
-        type: Boolean,
-        default: false,
-      },
       nextRouteName: {
         type: String,
         default: '',
@@ -103,8 +99,13 @@
           .catch((error) => {
             this.loading = false
             const { response } = error
-            this.$store.commit('errorMessage', response.data.message)
-            console.error(error)
+            if (typeof response.data === 'object') {
+              let msg = ''
+              Object.keys(response.data).map(function (key, index) {
+                msg += response.data[key] + '\n'
+              })
+              this.$store.commit('errorMessage', msg)
+            } else { this.$store.commit('errorMessage', response.data.message) }
           })
       },
     },
